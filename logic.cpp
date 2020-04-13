@@ -1,4 +1,5 @@
-#include <cassert>
+#include <optional>
+#include <unordered_set>
 
 #include "logic.hpp"
 

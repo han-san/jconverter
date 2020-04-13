@@ -1,8 +1,8 @@
 #pragma once
 
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
-#include <optional>
 
 auto const MILES_PER_METER = 0.0006213711922;
 auto const LBS_PER_GRAM = 0.0022046226218;
