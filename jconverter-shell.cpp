@@ -2,6 +2,7 @@
 #include <charconv>
 #include <optional>
 #include <string_view>
+#include <string>
 
 #include "logic.hpp"
 
@@ -14,7 +15,7 @@ auto main(int argc, char** argv) -> int
 
     auto fromString = std::string_view{argv[1]};
     auto toString = std::string_view{argv[2]};
-    auto valueString = std::string_view{argv[3]};
+    auto valueString = std::string{argv[3]};
 
     auto stringToUnit = [] (std::string_view unitString) -> std::optional<Unit> {
         try {
@@ -36,9 +37,14 @@ auto main(int argc, char** argv) -> int
         return 1;
     }
 
-    auto const value = std::strtod(valueString.data(), nullptr);
-    if (!value) {
-        std::cerr << "[value] is not a valid number (" << valueString << ").\n";
+    double value;
+    try {
+        value = stod(valueString);
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "[Value] is not a valid number (" << valueString << ").\n";
+        return 1;
+    } catch (const std::out_of_range& e) {
+        std::cerr << "[Value] is out of range for a double (" << valueString << ").\n";
         return 1;
     }
 
