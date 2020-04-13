@@ -10,7 +10,7 @@ auto main(int argc, char** argv) -> int
 {
     if (argc != 4) {
         std::cout << "Usage: " << argv[0] << " [From] [To] [Value]\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     auto const fromString = std::string_view{argv[1]};
@@ -28,13 +28,13 @@ auto main(int argc, char** argv) -> int
     auto const from = stringToUnit(fromString);
     if (!from) {
         std::cerr << "[From] is not a valid unit (" << fromString << ").\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     auto const to = stringToUnit(toString);
     if (!to) {
         std::cerr << "[To] is not a valid unit (" << toString << ").\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     double value;
@@ -42,10 +42,10 @@ auto main(int argc, char** argv) -> int
         value = stod(valueString);
     } catch (const std::invalid_argument& e) {
         std::cerr << "[Value] is not a valid number (" << valueString << ").\n";
-        return 1;
+        return EXIT_FAILURE;
     } catch (const std::out_of_range& e) {
         std::cerr << "[Value] is out of range for a double (" << valueString << ").\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     auto const result = convert(*from, *to, value);
