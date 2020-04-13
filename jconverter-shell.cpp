@@ -13,11 +13,11 @@ auto main(int argc, char** argv) -> int
         return 1;
     }
 
-    auto fromString = std::string_view{argv[1]};
-    auto toString = std::string_view{argv[2]};
-    auto valueString = std::string{argv[3]};
+    auto const fromString = std::string_view{argv[1]};
+    auto const toString = std::string_view{argv[2]};
+    auto const valueString = std::string{argv[3]};
 
-    auto stringToUnit = [] (std::string_view unitString) -> std::optional<Unit> {
+    auto const stringToUnit = [] (std::string_view const unitString) -> std::optional<Unit> {
         try {
             return stringToUnitMap.at(unitString);
         } catch (const std::out_of_range& e) {
@@ -48,7 +48,7 @@ auto main(int argc, char** argv) -> int
         return 1;
     }
 
-    auto result = convert(*from, *to, value);
+    auto const result = convert(*from, *to, value);
 
     if (result) {
         std::cout << *result << '\n';

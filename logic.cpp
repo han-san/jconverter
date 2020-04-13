@@ -83,14 +83,14 @@ auto static kilograms_to_grams(double kilograms) -> double
     return kilograms * 1000.;
 }
 
-auto contains(std::unordered_set<Unit> const& unitSet, Unit unit) {
+auto static contains(std::unordered_set<Unit> const& unitSet, Unit unit) {
     return unitSet.find(unit) != unitSet.cend();
 }
 
 // returns empty optional if units are of different types (e.g. distance and temperature)
-auto convert(Unit fromUnit, Unit toUnit, double value) -> std::optional<double>
+auto convert(Unit const fromUnit, Unit const toUnit, double const value) -> std::optional<double>
 {
-    for (auto unitType : unitTypes) {
+    for (auto const unitType : unitTypes) {
         if (contains(*unitType, fromUnit) && !contains(*unitType, toUnit)) {
             return {};
         }
