@@ -24,14 +24,14 @@ auto main(int argc, char** argv) -> int
         }
     };
 
-    auto const from = stringToUnit(fromString);
-    if (!from) {
+    auto const fromUnit = stringToUnit(fromString);
+    if (!fromUnit) {
         std::cerr << "[From] is not a valid unit (" << fromString << ").\n";
         return EXIT_FAILURE;
     }
 
-    auto const to = stringToUnit(toString);
-    if (!to) {
+    auto const toUnit = stringToUnit(toString);
+    if (!toUnit) {
         std::cerr << "[To] is not a valid unit (" << toString << ").\n";
         return EXIT_FAILURE;
     }
@@ -47,7 +47,7 @@ auto main(int argc, char** argv) -> int
         return EXIT_FAILURE;
     }
 
-    auto const result = convert(*from, *to, value);
+    auto const result = convert(*fromUnit, *toUnit, value);
 
     if (result) {
         std::cout << *result << '\n';
