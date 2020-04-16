@@ -1,3 +1,4 @@
+#include <cctype>
 #include <iostream>
 #include <optional>
 #include <string>
@@ -16,7 +17,10 @@ auto main(int argc, char** argv) -> int
     auto const toString = std::string_view{argv[2]};
     auto const valueString = std::string{argv[3]};
 
-    auto const stringToUnit = [] (std::string_view const unitString) -> std::optional<Unit> {
+    auto const stringToUnit = [] (std::string unitString) -> std::optional<Unit> {
+        for (auto& c : unitString) {
+            c = std::tolower(c);
+        }
         try {
             return stringToUnitMap.at(unitString);
         } catch (const std::out_of_range& e) {
@@ -24,13 +28,13 @@ auto main(int argc, char** argv) -> int
         }
     };
 
-    auto const fromUnit = stringToUnit(fromString);
+    auto const fromUnit = stringToUnit(std::string{fromString});
     if (!fromUnit) {
         std::cerr << "[From] is not a valid unit (" << fromString << ").\n";
         return EXIT_FAILURE;
     }
 
-    auto const toUnit = stringToUnit(toString);
+    auto const toUnit = stringToUnit(std::string{toString});
     if (!toUnit) {
         std::cerr << "[To] is not a valid unit (" << toString << ").\n";
         return EXIT_FAILURE;
