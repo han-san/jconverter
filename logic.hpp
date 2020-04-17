@@ -1,8 +1,12 @@
 #pragma once
 
+#include <array>
 #include <optional>
+#include <string_view>
 #include <unordered_map>
 #include <unordered_set>
+
+using namespace std::string_view_literals;
 
 auto const MILES_PER_METER = 0.0006213711922;
 auto const LBS_PER_GRAM = 0.0022046226218;
@@ -23,6 +27,22 @@ enum class Unit {
     LB,
     GRAM,
     KILOGRAM,
+};
+
+auto const unitStrings = std::array {
+    "Celsius"sv,
+    "Fahrenheit"sv,
+    "Kelvin"sv,
+
+    "Meter"sv,
+    "Kilometer"sv,
+    "Mile"sv,
+    "Foot"sv,
+    "Inch"sv,
+
+    "Pound"sv,
+    "Gram"sv,
+    "Kilogram"sv,
 };
 
 auto const temperatures = std::unordered_set<Unit> {

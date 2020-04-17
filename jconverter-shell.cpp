@@ -9,7 +9,11 @@
 auto main(int argc, char** argv) -> int
 {
     if (argc != 4) {
-        std::cout << "Usage: " << argv[0] << " [From] [To] [Value]\n";
+        std::cerr << "Usage: " << argv[0] << " [From] [To] [Value]\n\n";
+        std::cerr << "Available units:\n";
+        for (auto unit : unitStrings) {
+            std::cerr << '\t' << unit << '\n';
+        }
         return EXIT_FAILURE;
     }
 
