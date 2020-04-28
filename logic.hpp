@@ -6,8 +6,6 @@
 #include <unordered_map>
 #include <unordered_set>
 
-using namespace std::string_view_literals;
-
 auto const MILES_PER_METER = 0.0006213711922;
 auto const LBS_PER_GRAM = 0.0022046226218;
 auto const FEET_PER_METER = 3.280839895;
@@ -30,19 +28,19 @@ enum class Unit {
 };
 
 auto const unitStrings = std::array {
-    "Celsius"sv,
-    "Fahrenheit"sv,
-    "Kelvin"sv,
+    std::string_view{"Celsius"},
+    std::string_view{"Fahrenheit"},
+    std::string_view{"Kelvin"},
 
-    "Meter"sv,
-    "Kilometer"sv,
-    "Mile"sv,
-    "Foot"sv,
-    "Inch"sv,
+    std::string_view{"Meter"},
+    std::string_view{"Kilometer"},
+    std::string_view{"Mile"},
+    std::string_view{"Foot"},
+    std::string_view{"Inch"},
 
-    "Pound"sv,
-    "Gram"sv,
-    "Kilogram"sv,
+    std::string_view{"Pound"},
+    std::string_view{"Gram"},
+    std::string_view{"Kilogram"},
 };
 
 auto const temperatures = std::unordered_set<Unit> {
