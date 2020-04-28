@@ -6,10 +6,12 @@
 
 #include "logic.hpp"
 
+using namespace std::string_view_literals;
+
 auto main(int argc, char** argv) -> int
 {
-    if (argc != 4) {
-        std::cerr << "Usage: " << argv[0] << " [From] [To] [Value]\n\n";
+    if (argc != 3 && argc != 4) {
+        std::cerr << "Usage: " << argv[0] << " [From] [To] [Value | -]\n\n";
         std::cerr << "Available units:\n";
         for (auto unit : unitStrings) {
             std::cerr << '\t' << unit << '\n';
@@ -19,7 +21,17 @@ auto main(int argc, char** argv) -> int
 
     auto const fromString = std::string_view{argv[1]};
     auto const toString = std::string_view{argv[2]};
-    auto const valueString = std::string{argv[3]};
+
+    // If the value arg is omitted or "-" get the string from stdin
+    auto const valueString = [argc, argv] () {
+        auto tmp = std::string{};
+        if ((argc == 3) || ("-"sv == argv[3])) {
+            std::cin >> tmp;
+        } else {
+            tmp = argv[3];
+        }
+        return tmp;
+    }();
 
     auto const stringToUnit = [] (std::string unitString) -> std::optional<Unit> {
         for (auto& c : unitString) {
