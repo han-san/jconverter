@@ -100,86 +100,64 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value) -> std:
     auto const base = [value, fromUnit] () {
         switch (fromUnit) {
             // Distances
-            case Unit::METER: {
+            case Unit::METER:
                 return value;
-            } break;
-            case Unit::KILOMETER: {
+            case Unit::KILOMETER:
                 return kilometers_to_meters(value);
-            } break;
-            case Unit::MILE: {
+            case Unit::MILE:
                 return miles_to_meters(value);
-            } break;
-            case Unit::FOOT: {
+            case Unit::FOOT:
                 return feet_to_meters(value);
-            } break;
-            case Unit::INCH: {
+            case Unit::INCH:
                 return inches_to_meters(value);
-            } break;
 
             // Temperatures
-            case Unit::KELVIN: {
+            case Unit::KELVIN:
                 return value;
-            } break;
-            case Unit::CELSIUS: {
+            case Unit::CELSIUS:
                 return celsius_to_kelvin(value);
-            } break;
-            case Unit::FAHRENHEIT: {
+            case Unit::FAHRENHEIT:
                 return fahrenheit_to_kelvin(value);
-            } break;
 
             // Weight
-            case Unit::GRAM: {
+            case Unit::GRAM:
                 return value;
-            } break;
-            case Unit::KILOGRAM: {
+            case Unit::KILOGRAM:
                 return kilograms_to_grams(value);
-            } break;
-            case Unit::LB: {
+            case Unit::LB:
                 return lbs_to_grams(value);
-            } break;
         }
     }();
 
     auto const result = [base, toUnit] () {
         switch (toUnit) {
             // Distances
-            case Unit::METER: {
+            case Unit::METER:
                 return base;
-            } break;
-            case Unit::KILOMETER: {
+            case Unit::KILOMETER:
                 return meters_to_kilometers(base);
-            } break;
-            case Unit::MILE: {
+            case Unit::MILE:
                 return meters_to_miles(base);
-            } break;
-            case Unit::FOOT: {
+            case Unit::FOOT:
                 return meters_to_feet(base);
-            } break;
-            case Unit::INCH: {
+            case Unit::INCH:
                 return meters_to_inches(base);
-            } break;
 
             // Temperatures
-            case Unit::KELVIN: {
+            case Unit::KELVIN:
                 return base;
-            } break;
-            case Unit::CELSIUS: {
+            case Unit::CELSIUS:
                 return kelvin_to_celsius(base);
-            } break;
-            case Unit::FAHRENHEIT: {
+            case Unit::FAHRENHEIT:
                 return kelvin_to_fahrenheit(base);
-            } break;
 
             // Weight
-            case Unit::GRAM: {
+            case Unit::GRAM:
                 return base;
-            } break;
-            case Unit::KILOGRAM: {
+            case Unit::KILOGRAM:
                 return grams_to_kilograms(base);
-            } break;
-            case Unit::LB: {
+            case Unit::LB:
                 return grams_to_lbs(base);
-            } break;
         }
     }();
 
