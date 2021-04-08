@@ -24,30 +24,94 @@ auto constexpr convert_distance(Unit::Distance const fromUnit,
     -> double {
   auto const meters = [fromUnit, value]() -> Distance::Meters {
     switch (fromUnit) {
+    case Unit::Distance::millimeter:
+      return Distance::Millimeters {value};
+    case Unit::Distance::centimeter:
+      return Distance::Centimeters {value};
+    case Unit::Distance::decimeter:
+      return Distance::Decimeters {value};
     case Unit::Distance::meter:
       return Distance::Meters {value};
     case Unit::Distance::kilometer:
-      return Distance::Meters {Distance::Kilometers {value}};
-    case Unit::Distance::mile:
-      return Distance::Meters {Distance::Imperial::Miles {value}};
-    case Unit::Distance::foot:
-      return Distance::Meters {Distance::Imperial::Feet {value}};
+      return Distance::Kilometers {value};
+    case Unit::Distance::lightyear:
+
+      return Distance::Lightyears {value};
+    case Unit::Distance::thou:
+
+      return Distance::Imperial::Thou {value};
+    case Unit::Distance::barleycorn:
+      return Distance::Imperial::Barleycorns {value};
     case Unit::Distance::inch:
-      return Distance::Meters {Distance::Imperial::Inches {value}};
+      return Distance::Imperial::Inches {value};
+    case Unit::Distance::foot:
+      return Distance::Imperial::Feet {value};
+    case Unit::Distance::yard:
+      return Distance::Imperial::Yards {value};
+    case Unit::Distance::furlong:
+      return Distance::Imperial::Furlongs {value};
+    case Unit::Distance::mile:
+      return Distance::Imperial::Miles {value};
+    case Unit::Distance::league:
+      return Distance::Imperial::Leagues {value};
+
+    case Unit::Distance::fathom:
+      return Distance::Imperial::Fathoms {value};
+    case Unit::Distance::cable:
+      return Distance::Imperial::Cables {value};
+    case Unit::Distance::nauticalMile:
+      return Distance::Imperial::NauticleMiles {value};
+
+    case Unit::Distance::link:
+      return Distance::Imperial::Links {value};
+    case Unit::Distance::rod:
+      return Distance::Imperial::Rods {value};
     }
   }();
 
   switch (toUnit) {
+  case Unit::Distance::millimeter:
+    return Distance::Millimeters {meters}.count();
+  case Unit::Distance::centimeter:
+    return Distance::Centimeters {meters}.count();
+  case Unit::Distance::decimeter:
+    return Distance::Decimeters {meters}.count();
   case Unit::Distance::meter:
     return meters.count();
   case Unit::Distance::kilometer:
     return Distance::Kilometers {meters}.count();
-  case Unit::Distance::mile:
-    return Distance::Imperial::Miles {meters}.count();
-  case Unit::Distance::foot:
-    return Distance::Imperial::Feet {meters}.count();
+
+  case Unit::Distance::lightyear:
+    return Distance::Lightyears {meters}.count();
+  case Unit::Distance::thou:
+
+    return Distance::Imperial::Thou {meters}.count();
+  case Unit::Distance::barleycorn:
+    return Distance::Imperial::Barleycorns {meters}.count();
   case Unit::Distance::inch:
     return Distance::Imperial::Inches {meters}.count();
+  case Unit::Distance::foot:
+    return Distance::Imperial::Feet {meters}.count();
+  case Unit::Distance::yard:
+    return Distance::Imperial::Yards {meters}.count();
+  case Unit::Distance::furlong:
+    return Distance::Imperial::Furlongs {meters}.count();
+  case Unit::Distance::mile:
+    return Distance::Imperial::Miles {meters}.count();
+  case Unit::Distance::league:
+    return Distance::Imperial::Leagues {meters}.count();
+
+  case Unit::Distance::fathom:
+    return Distance::Imperial::Fathoms {meters}.count();
+  case Unit::Distance::cable:
+    return Distance::Imperial::Cables {meters}.count();
+  case Unit::Distance::nauticalMile:
+    return Distance::Imperial::NauticleMiles {meters}.count();
+
+  case Unit::Distance::link:
+    return Distance::Imperial::Links {meters}.count();
+  case Unit::Distance::rod:
+    return Distance::Imperial::Rods {meters}.count();
   }
 }
 

@@ -31,13 +31,18 @@ using MetersPerNauticalMile = std::ratio<1'852>;
 using MetersPerLink = std::ratio_multiply<MetersPerFoot, std::ratio<66, 100>>;
 using MetersPerRod = std::ratio_multiply<MetersPerFoot, std::ratio<66, 4>>;
 
+using MetersPerLightyear = std::ratio<9'460'730'472'580'800>;
+
 template <typename Rep, typename Period = std::ratio<1>>
 using Distance = std::chrono::duration<Rep, Period>;
 
 using Millimeters = Distance<double, std::milli>;
 using Centimeters = Distance<double, std::centi>;
+using Decimeters = Distance<double, std::deci>;
 using Meters = Distance<double>;
 using Kilometers = Distance<double, std::kilo>;
+
+using Lightyears = Distance<double, MetersPerLightyear>;
 
 namespace Imperial {
 
@@ -140,11 +145,29 @@ public:
   };
 
   enum class Distance {
-    kilometer,
+    millimeter,
+    centimeter,
+    decimeter,
     meter,
-    mile,
-    foot,
+    kilometer,
+
+    lightyear,
+
+    thou,
+    barleycorn,
     inch,
+    foot,
+    yard,
+    furlong,
+    mile,
+    league,
+
+    fathom,
+    cable,
+    nauticalMile,
+
+    link,
+    rod,
   };
 
   enum class Weight {
@@ -210,18 +233,55 @@ private:
       {"kelvin", Temperature::kelvin},
       {"k", Temperature::kelvin},
 
+      {"millimeter", Distance::millimeter},
+      {"millimeters", Distance::millimeter},
+      {"mm", Distance::millimeter},
+      {"centimeter", Distance::centimeter},
+      {"centimeters", Distance::centimeter},
+      {"cm", Distance::centimeter},
+      {"decimeter", Distance::decimeter},
+      {"decimeters", Distance::decimeter},
+      {"dm", Distance::decimeter},
       {"meter", Distance::meter},
       {"meters", Distance::meter},
       {"m", Distance::meter},
       {"km", Distance::kilometer},
       {"kilometer", Distance::kilometer},
       {"kilometers", Distance::kilometer},
-      {"mile", Distance::mile},
-      {"miles", Distance::mile},
-      {"foot", Distance::foot},
-      {"feet", Distance::foot},
+      {"lightyear", Distance::lightyear},
+      {"lightyears", Distance::lightyear},
+      {"light-year", Distance::lightyear},
+      {"light-years", Distance::lightyear},
+      {"ly", Distance::lightyear},
+      {"thou", Distance::thou},
+      {"thou", Distance::thou},
+      {"barleycorn", Distance::barleycorn},
+      {"barleycorns", Distance::barleycorn},
       {"inch", Distance::inch},
       {"inches", Distance::inch},
+      {"foot", Distance::foot},
+      {"feet", Distance::foot},
+      {"yard", Distance::yard},
+      {"yards", Distance::yard},
+      {"y", Distance::yard},
+      {"furlong", Distance::furlong},
+      {"furlongs", Distance::furlong},
+      {"mile", Distance::mile},
+      {"miles", Distance::mile},
+      {"league", Distance::league},
+      {"leagues", Distance::league},
+      {"fathom", Distance::fathom},
+      {"fathoms", Distance::fathom},
+      {"cable", Distance::cable},
+      {"cables", Distance::cable},
+      {"nauticalmile", Distance::nauticalMile},
+      {"nauticalmiles", Distance::nauticalMile},
+      {"nautical", Distance::nauticalMile},
+      {"nauticals", Distance::nauticalMile},
+      {"link", Distance::link},
+      {"links", Distance::link},
+      {"rod", Distance::rod},
+      {"rods", Distance::rod},
 
       {"pound", Weight::lb},
       {"pounds", Weight::lb},
@@ -240,14 +300,21 @@ private:
 };
 
 auto const unitStrings = std::array {
-    std::string_view {"Celsius"},  std::string_view {"Fahrenheit"},
+    std::string_view {"Celsius"},       std::string_view {"Fahrenheit"},
     std::string_view {"Kelvin"},
 
-    std::string_view {"Meter"},    std::string_view {"Kilometer"},
-    std::string_view {"Mile"},     std::string_view {"Foot"},
-    std::string_view {"Inch"},
+    std::string_view {"Millimeter"},    std::string_view {"Centimeter"},
+    std::string_view {"Decimeter"},     std::string_view {"Meter"},
+    std::string_view {"Kilometer"},     std::string_view {"Light-year"},
+    std::string_view {"Thou"},          std::string_view {"Barleycorn"},
+    std::string_view {"Inch"},          std::string_view {"Foot"},
+    std::string_view {"Yard"},          std::string_view {"Furlong"},
+    std::string_view {"Mile"},          std::string_view {"League"},
+    std::string_view {"Fathom"},        std::string_view {"Cable"},
+    std::string_view {"Nautical Mile"}, std::string_view {"Link"},
+    std::string_view {"Rod"},
 
-    std::string_view {"Pound"},    std::string_view {"Gram"},
+    std::string_view {"Pound"},         std::string_view {"Gram"},
     std::string_view {"Kilogram"},
 };
 
