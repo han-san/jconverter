@@ -176,17 +176,12 @@ public:
     kilogram,
   };
 
-private:
   // WARNING: The constructor relies on the specific order of Variant's template
   // arguments. If they are reordered the constructor must be updated to reflect
   // the change.
   using Variant = std::variant<Temperature, Distance, Weight>;
 
-public:
-  explicit Unit(std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(),
-                   [](char unsigned c) { return std::tolower(c); });
-    m_unit = stringToUnitMap.at(str);
+  explicit Unit(Variant const unit) : m_unit {unit} {
     m_type = [this] {
       // The order of Variant's template arguments determines which Type should
       // be returned.
@@ -223,77 +218,6 @@ private:
   [[nodiscard]] auto temperature() const {
     return std::get<Temperature>(m_unit);
   }
-
-  std::unordered_map<std::string_view,
-                     Variant> const static inline stringToUnitMap {
-      {"celsius", Temperature::celsius},
-      {"c", Temperature::celsius},
-      {"fahrenheit", Temperature::fahrenheit},
-      {"f", Temperature::fahrenheit},
-      {"kelvin", Temperature::kelvin},
-      {"k", Temperature::kelvin},
-
-      {"millimeter", Distance::millimeter},
-      {"millimeters", Distance::millimeter},
-      {"mm", Distance::millimeter},
-      {"centimeter", Distance::centimeter},
-      {"centimeters", Distance::centimeter},
-      {"cm", Distance::centimeter},
-      {"decimeter", Distance::decimeter},
-      {"decimeters", Distance::decimeter},
-      {"dm", Distance::decimeter},
-      {"meter", Distance::meter},
-      {"meters", Distance::meter},
-      {"m", Distance::meter},
-      {"km", Distance::kilometer},
-      {"kilometer", Distance::kilometer},
-      {"kilometers", Distance::kilometer},
-      {"lightyear", Distance::lightyear},
-      {"lightyears", Distance::lightyear},
-      {"light-year", Distance::lightyear},
-      {"light-years", Distance::lightyear},
-      {"ly", Distance::lightyear},
-      {"thou", Distance::thou},
-      {"thou", Distance::thou},
-      {"barleycorn", Distance::barleycorn},
-      {"barleycorns", Distance::barleycorn},
-      {"inch", Distance::inch},
-      {"inches", Distance::inch},
-      {"foot", Distance::foot},
-      {"feet", Distance::foot},
-      {"yard", Distance::yard},
-      {"yards", Distance::yard},
-      {"y", Distance::yard},
-      {"furlong", Distance::furlong},
-      {"furlongs", Distance::furlong},
-      {"mile", Distance::mile},
-      {"miles", Distance::mile},
-      {"league", Distance::league},
-      {"leagues", Distance::league},
-      {"fathom", Distance::fathom},
-      {"fathoms", Distance::fathom},
-      {"cable", Distance::cable},
-      {"cables", Distance::cable},
-      {"nauticalmile", Distance::nauticalMile},
-      {"nauticalmiles", Distance::nauticalMile},
-      {"nautical", Distance::nauticalMile},
-      {"nauticals", Distance::nauticalMile},
-      {"link", Distance::link},
-      {"links", Distance::link},
-      {"rod", Distance::rod},
-      {"rods", Distance::rod},
-
-      {"pound", Weight::lb},
-      {"pounds", Weight::lb},
-      {"lbs", Weight::lb},
-      {"lb", Weight::lb},
-      {"gram", Weight::gram},
-      {"g", Weight::gram},
-      {"grams", Weight::gram},
-      {"kg", Weight::kilogram},
-      {"kilogram", Weight::kilogram},
-      {"kilograms", Weight::kilogram},
-  };
 
   Type m_type {};
   Variant m_unit {};
