@@ -127,12 +127,35 @@ auto constexpr to_grams(Unit::Weight const fromUnit, double const value)
     -> Weight::Grams {
   using namespace Weight;
   switch (fromUnit) {
+  case Unit::Weight::milligram:
+    return Milligrams {value};
   case Unit::Weight::gram:
     return Grams {value};
+  case Unit::Weight::hectogram:
+    return Hectograms {value};
   case Unit::Weight::kilogram:
     return Kilograms {value};
+  case Unit::Weight::tonne:
+    return Tonnes {value};
+
+  case Unit::Weight::grain:
+    return Imperial::Grains {value};
+  case Unit::Weight::drachm:
+    return Imperial::Drachms {value};
+  case Unit::Weight::ounce:
+    return Imperial::Ounces {value};
   case Unit::Weight::lb:
     return Imperial::Pounds {value};
+  case Unit::Weight::stone:
+    return Imperial::Stones {value};
+  case Unit::Weight::quarter:
+    return Imperial::Quarters {value};
+  case Unit::Weight::hundredweight:
+    return Imperial::Hundredweights {value};
+  case Unit::Weight::ton:
+    return Imperial::Tons {value};
+  case Unit::Weight::slug:
+    return Imperial::Slugs {value};
   }
 }
 
@@ -140,12 +163,35 @@ auto constexpr from_grams(Weight::Grams const grams, Unit::Weight const toUnit)
     -> double {
   using namespace Weight;
   switch (toUnit) {
+  case Unit::Weight::milligram:
+    return Milligrams {grams}.count();
   case Unit::Weight::gram:
-    return grams.count();
+    return Grams {grams}.count();
+  case Unit::Weight::hectogram:
+    return Hectograms {grams}.count();
   case Unit::Weight::kilogram:
     return Kilograms {grams}.count();
+  case Unit::Weight::tonne:
+    return Tonnes {grams}.count();
+
+  case Unit::Weight::grain:
+    return Imperial::Grains {grams}.count();
+  case Unit::Weight::drachm:
+    return Imperial::Drachms {grams}.count();
+  case Unit::Weight::ounce:
+    return Imperial::Ounces {grams}.count();
   case Unit::Weight::lb:
     return Imperial::Pounds {grams}.count();
+  case Unit::Weight::stone:
+    return Imperial::Stones {grams}.count();
+  case Unit::Weight::quarter:
+    return Imperial::Quarters {grams}.count();
+  case Unit::Weight::hundredweight:
+    return Imperial::Hundredweights {grams}.count();
+  case Unit::Weight::ton:
+    return Imperial::Tons {grams}.count();
+  case Unit::Weight::slug:
+    return Imperial::Slugs {grams}.count();
   }
 }
 

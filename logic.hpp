@@ -171,9 +171,21 @@ public:
   };
 
   enum class Weight {
-    lb,
+    milligram,
     gram,
+    hectogram,
     kilogram,
+    tonne,
+
+    grain,
+    drachm,
+    ounce,
+    lb,
+    stone,
+    quarter,
+    hundredweight,
+    ton,
+    slug
   };
 
   // WARNING: The constructor relies on the specific order of Variant's template
@@ -238,8 +250,13 @@ std::array const unitStrings {
     std::string_view {"Nautical Mile"}, std::string_view {"Link"},
     std::string_view {"Rod"},
 
-    std::string_view {"Pound"},         std::string_view {"Gram"},
-    std::string_view {"Kilogram"},
+    std::string_view {"Milligram"},     std::string_view {"Gram"},
+    std::string_view {"Hectogram"},     std::string_view {"Kilogram"},
+    std::string_view {"Tonne"},         std::string_view {"Grain"},
+    std::string_view {"Drachm"},        std::string_view {"Ounce"},
+    std::string_view {"Pound"},         std::string_view {"Stone"},
+    std::string_view {"Quarter"},       std::string_view {"Hundredweight"},
+    std::string_view {"Ton"},           std::string_view {"Slug"},
 };
 
 auto convert(Unit const& fromUnit, Unit const& toUnit, double value)
