@@ -232,6 +232,58 @@ auto constexpr convert_temperature(Unit::Temperature const fromUnit,
   return from_kelvin(to_kelvin(fromUnit, value), toUnit);
 }
 
+auto constexpr to_liters(Unit::Volume fromUnit, double const value)
+    -> Volume::Liters {
+  using namespace Volume;
+  switch (fromUnit) {
+  case Unit::Volume::milliliter:
+    return Milliliters {value};
+  case Unit::Volume::centiliter:
+    return Centiliters {value};
+  case Unit::Volume::liter:
+    return Liters {value};
+  case Unit::Volume::fluidOunce:
+    return Imperial::FluidOunces {value};
+  case Unit::Volume::gill:
+    return Imperial::Gills {value};
+  case Unit::Volume::pint:
+    return Imperial::Pints {value};
+  case Unit::Volume::quart:
+    return Imperial::Quarts {value};
+  case Unit::Volume::gallon:
+    return Imperial::Gallons {value};
+  }
+}
+
+auto constexpr from_liters(Volume::Liters const liters, Unit::Volume toUnit)
+    -> double {
+  using namespace Volume;
+  switch (toUnit) {
+  case Unit::Volume::milliliter:
+    return Milliliters {liters}.count();
+  case Unit::Volume::centiliter:
+    return Centiliters {liters}.count();
+  case Unit::Volume::liter:
+    return Liters {liters}.count();
+  case Unit::Volume::fluidOunce:
+    return Imperial::FluidOunces {liters}.count();
+  case Unit::Volume::gill:
+    return Imperial::Gills {liters}.count();
+  case Unit::Volume::pint:
+    return Imperial::Pints {liters}.count();
+  case Unit::Volume::quart:
+    return Imperial::Quarts {liters}.count();
+  case Unit::Volume::gallon:
+    return Imperial::Gallons {liters}.count();
+  }
+}
+
+auto constexpr convert_volume(Unit::Volume const fromUnit,
+                              Unit::Volume const toUnit, double const value)
+    -> double {
+  return from_liters(to_liters(fromUnit, value), toUnit);
+}
+
 // returns empty optional if units are of different types (e.g. distance and
 // temperature)
 auto convert(Unit const& fromUnit, Unit const& toUnit, double const value)
@@ -248,5 +300,7 @@ auto convert(Unit const& fromUnit, Unit const& toUnit, double const value)
   case Unit::Type::temperature:
     return convert_temperature(fromUnit.temperature(), toUnit.temperature(),
                                value);
+  case Unit::Type::volume:
+    return convert_volume(fromUnit.volume(), toUnit.volume(), value);
   }
 }

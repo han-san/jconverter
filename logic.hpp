@@ -68,7 +68,7 @@ using Rods = Distance<double, MetersPerRod>;
 namespace Volume {
 
 // Volume unit ratios
-using LitersPerPint = std::ratio<56'826'125, 100'000>;
+using LitersPerPint = std::ratio<56'826'125, 100'000'000>;
 
 using LitersPerGill = std::ratio_divide<LitersPerPint, std::ratio<4>>;
 using LitersPerFluidOunce = std::ratio_divide<LitersPerPint, std::ratio<20>>;
@@ -136,7 +136,7 @@ using Tonnes = Weight<double, std::mega>;
 
 class Unit {
 public:
-  enum class Type { temperature, distance, weight };
+  enum class Type { temperature, distance, weight, volume };
 
   enum class Temperature {
     celsius,
@@ -188,10 +188,22 @@ public:
     slug
   };
 
+  enum class Volume {
+    milliliter,
+    centiliter,
+    liter,
+
+    fluidOunce,
+    gill,
+    pint,
+    quart,
+    gallon
+  };
+
   // WARNING: The constructor relies on the specific order of Variant's template
   // arguments. If they are reordered the constructor must be updated to reflect
   // the change.
-  using Variant = std::variant<Temperature, Distance, Weight>;
+  using Variant = std::variant<Temperature, Distance, Weight, Volume>;
 
   explicit Unit(Variant const unit) : m_unit {unit} {
     m_type = [this] {
@@ -204,9 +216,11 @@ public:
         return Type::distance;
       case 2:
         return Type::weight;
+      case 3:
+        return Type::volume;
       case std::variant_npos:
       default:
-        static_assert(std::variant_size_v<Variant> == 3,
+        static_assert(std::variant_size_v<Variant> == 4,
                       "Unit's constructor must be updated to reflect a change "
                       "in Unit::Variant's number of template arguments");
         // Unreachable unless the switch doesn't cover all of Variant's
@@ -230,6 +244,8 @@ private:
   [[nodiscard]] auto temperature() const {
     return std::get<Temperature>(m_unit);
   }
+
+  [[nodiscard]] auto volume() const { return std::get<Volume>(m_unit); }
 
   Type m_type {};
   Variant m_unit {};
@@ -257,6 +273,11 @@ std::array const unitStrings {
     std::string_view {"Pound"},         std::string_view {"Stone"},
     std::string_view {"Quarter"},       std::string_view {"Hundredweight"},
     std::string_view {"Ton"},           std::string_view {"Slug"},
+
+    std::string_view {"Milliliter"},    std::string_view {"Centiliter"},
+    std::string_view {"Liter"},         std::string_view {"Fluid Ounce"},
+    std::string_view {"Gill"},          std::string_view {"Pint"},
+    std::string_view {"Quart"},         std::string_view {"Gallon"},
 };
 
 auto convert(Unit const& fromUnit, Unit const& toUnit, double value)
