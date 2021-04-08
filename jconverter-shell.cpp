@@ -32,24 +32,22 @@ auto main(int argc, char** argv) -> int {
     return tmp;
   }();
 
-  auto const stringToUnit = [](std::string unitString) -> std::optional<Unit> {
-    for (auto& c : unitString) {
-      c = std::tolower(c);
-    }
+  auto const stringToUnit =
+      [](std::string_view const unitString) -> std::optional<Unit> {
     try {
-      return stringToUnitMap.at(unitString);
+      return Unit {std::string {unitString}};
     } catch (const std::out_of_range& e) {
       return {};
     }
   };
 
-  auto const fromUnit = stringToUnit(std::string {fromString});
+  auto const fromUnit = stringToUnit(fromString);
   if (!fromUnit) {
     std::cerr << "[From] is not a valid unit (" << fromString << ").\n";
     return EXIT_FAILURE;
   }
 
-  auto const toUnit = stringToUnit(std::string {toString});
+  auto const toUnit = stringToUnit(toString);
   if (!toUnit) {
     std::cerr << "[To] is not a valid unit (" << toString << ").\n";
     return EXIT_FAILURE;

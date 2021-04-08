@@ -1,11 +1,13 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <chrono>
 #include <optional>
 #include <ratio>
 #include <string_view>
 #include <unordered_map>
+#include <variant>
 
 namespace Distance {
 
@@ -127,27 +129,114 @@ using Tonnes = Weight<double, std::mega>;
 
 } // namespace Weight
 
-auto const MILES_PER_METER = 0.0006213711922;
-auto const LBS_PER_GRAM = 0.0022046226218;
-auto const FEET_PER_METER = 3.280839895;
-auto const INCHES_PER_METER = 39.3700787402;
+class Unit {
+public:
+  enum class Type { temperature, distance, weight };
 
-enum class UnitType { temperature, distance, weight };
+  enum class Temperature {
+    celsius,
+    fahrenheit,
+    kelvin,
+  };
 
-enum class Unit {
-  celsius,
-  fahrenheit,
-  kelvin,
+  enum class Distance {
+    kilometer,
+    meter,
+    mile,
+    foot,
+    inch,
+  };
 
-  kilometer,
-  meter,
-  mile,
-  foot,
-  inch,
+  enum class Weight {
+    lb,
+    gram,
+    kilogram,
+  };
 
-  lb,
-  gram,
-  kilogram,
+private:
+  // WARNING: The constructor relies on the specific order of Variant's template
+  // arguments. If they are reordered the constructor must be updated to reflect
+  // the change.
+  using Variant = std::variant<Temperature, Distance, Weight>;
+
+public:
+  explicit Unit(std::string str) {
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](char unsigned c) { return std::tolower(c); });
+    m_unit = stringToUnitMap.at(str);
+    m_type = [this] {
+      // The order of Variant's template arguments determines which Type should
+      // be returned.
+      switch (m_unit.index()) {
+      case 0:
+        return Type::temperature;
+      case 1:
+        return Type::distance;
+      case 2:
+        return Type::weight;
+      case std::variant_npos:
+      default:
+        static_assert(std::variant_size_v<Variant> == 3,
+                      "Unit's constructor must be updated to reflect a change "
+                      "in Unit::Variant's number of template arguments");
+        // Unreachable unless the switch doesn't cover all of Variant's
+        // possible enumerations or m_unit has thrown an exception that was
+        // handled but left it in an invalid state.
+        std::terminate();
+      }
+    }();
+  }
+
+private:
+  auto friend convert(Unit const& fromUnit, Unit const& toUnit, double value)
+      -> std::optional<double>;
+
+  [[nodiscard]] auto type() const noexcept -> Type { return m_type; }
+
+  [[nodiscard]] auto weight() const { return std::get<Weight>(m_unit); }
+
+  [[nodiscard]] auto distance() const { return std::get<Distance>(m_unit); }
+
+  [[nodiscard]] auto temperature() const {
+    return std::get<Temperature>(m_unit);
+  }
+
+  std::unordered_map<std::string_view,
+                     Variant> const static inline stringToUnitMap = {
+      {"celsius", Temperature::celsius},
+      {"c", Temperature::celsius},
+      {"fahrenheit", Temperature::fahrenheit},
+      {"f", Temperature::fahrenheit},
+      {"kelvin", Temperature::kelvin},
+      {"k", Temperature::kelvin},
+
+      {"meter", Distance::meter},
+      {"meters", Distance::meter},
+      {"m", Distance::meter},
+      {"km", Distance::kilometer},
+      {"kilometer", Distance::kilometer},
+      {"kilometers", Distance::kilometer},
+      {"mile", Distance::mile},
+      {"miles", Distance::mile},
+      {"foot", Distance::foot},
+      {"feet", Distance::foot},
+      {"inch", Distance::inch},
+      {"inches", Distance::inch},
+
+      {"pound", Weight::lb},
+      {"pounds", Weight::lb},
+      {"lbs", Weight::lb},
+      {"lb", Weight::lb},
+      {"gram", Weight::gram},
+      {"g", Weight::gram},
+      {"grams", Weight::gram},
+      {"kg", Weight::kilogram},
+      {"kilogram", Weight::kilogram},
+      {"kilograms", Weight::kilogram},
+  };
+
+  Type m_type {};
+  Variant m_unit {};
 };
 
 auto const unitStrings = std::array {
@@ -162,37 +251,5 @@ auto const unitStrings = std::array {
     std::string_view {"Kilogram"},
 };
 
-auto const stringToUnitMap = std::unordered_map<std::string_view, Unit> {
-    {"celsius", Unit::celsius},
-    {"c", Unit::celsius},
-    {"fahrenheit", Unit::fahrenheit},
-    {"f", Unit::fahrenheit},
-    {"kelvin", Unit::kelvin},
-    {"k", Unit::kelvin},
-
-    {"meter", Unit::meter},
-    {"meters", Unit::meter},
-    {"m", Unit::meter},
-    {"km", Unit::kilometer},
-    {"kilometer", Unit::kilometer},
-    {"kilometers", Unit::kilometer},
-    {"mile", Unit::mile},
-    {"miles", Unit::mile},
-    {"foot", Unit::foot},
-    {"feet", Unit::foot},
-    {"inch", Unit::inch},
-    {"inches", Unit::inch},
-
-    {"pound", Unit::lb},
-    {"pounds", Unit::lb},
-    {"lbs", Unit::lb},
-    {"lb", Unit::lb},
-    {"gram", Unit::gram},
-    {"g", Unit::gram},
-    {"grams", Unit::gram},
-    {"kg", Unit::kilogram},
-    {"kilogram", Unit::kilogram},
-    {"kilograms", Unit::kilogram},
-};
-
-auto convert(Unit fromUnit, Unit toUnit, double value) -> std::optional<double>;
+auto convert(Unit const& fromUnit, Unit const& toUnit, double value)
+    -> std::optional<double>;
