@@ -251,10 +251,13 @@ private:
   Variant m_unit {};
 };
 
-std::array const unitStrings {
-    std::string_view {"Celsius"},       std::string_view {"Fahrenheit"},
+std::array constexpr temperatureStrings {
+    std::string_view {"Celsius"},
+    std::string_view {"Fahrenheit"},
     std::string_view {"Kelvin"},
+};
 
+std::array constexpr distanceStrings {
     std::string_view {"Millimeter"},    std::string_view {"Centimeter"},
     std::string_view {"Decimeter"},     std::string_view {"Meter"},
     std::string_view {"Kilometer"},     std::string_view {"Light-year"},
@@ -265,19 +268,23 @@ std::array const unitStrings {
     std::string_view {"Fathom"},        std::string_view {"Cable"},
     std::string_view {"Nautical Mile"}, std::string_view {"Link"},
     std::string_view {"Rod"},
+};
 
-    std::string_view {"Milligram"},     std::string_view {"Gram"},
-    std::string_view {"Hectogram"},     std::string_view {"Kilogram"},
-    std::string_view {"Tonne"},         std::string_view {"Grain"},
-    std::string_view {"Drachm"},        std::string_view {"Ounce"},
-    std::string_view {"Pound"},         std::string_view {"Stone"},
-    std::string_view {"Quarter"},       std::string_view {"Hundredweight"},
-    std::string_view {"Ton"},           std::string_view {"Slug"},
+std::array constexpr weightStrings {
+    std::string_view {"Milligram"}, std::string_view {"Gram"},
+    std::string_view {"Hectogram"}, std::string_view {"Kilogram"},
+    std::string_view {"Tonne"},     std::string_view {"Grain"},
+    std::string_view {"Drachm"},    std::string_view {"Ounce"},
+    std::string_view {"Pound"},     std::string_view {"Stone"},
+    std::string_view {"Quarter"},   std::string_view {"Hundredweight"},
+    std::string_view {"Ton"},       std::string_view {"Slug"},
+};
 
-    std::string_view {"Milliliter"},    std::string_view {"Centiliter"},
-    std::string_view {"Liter"},         std::string_view {"Fluid Ounce"},
-    std::string_view {"Gill"},          std::string_view {"Pint"},
-    std::string_view {"Quart"},         std::string_view {"Gallon"},
+std::array constexpr volumeStrings {
+    std::string_view {"Milliliter"}, std::string_view {"Centiliter"},
+    std::string_view {"Liter"},      std::string_view {"Fluid Ounce"},
+    std::string_view {"Gill"},       std::string_view {"Pint"},
+    std::string_view {"Quart"},      std::string_view {"Gallon"},
 };
 
 auto convert(Unit const& fromUnit, Unit const& toUnit, double value)
