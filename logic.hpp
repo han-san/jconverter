@@ -6,7 +6,6 @@
 #include <ratio>
 #include <string_view>
 #include <unordered_map>
-#include <unordered_set>
 
 namespace Distance {
 
@@ -161,28 +160,6 @@ auto const unitStrings = std::array {
 
     std::string_view {"Pound"},    std::string_view {"Gram"},
     std::string_view {"Kilogram"},
-};
-
-auto const temperatures = std::unordered_set<Unit> {
-    Unit::celsius,
-    Unit::fahrenheit,
-    Unit::kelvin,
-};
-
-auto const distances = std::unordered_set<Unit> {
-    Unit::kilometer, Unit::meter, Unit::mile, Unit::foot, Unit::inch,
-};
-
-auto const weights = std::unordered_set<Unit> {
-    Unit::lb,
-    Unit::kilogram,
-    Unit::gram,
-};
-
-auto const unitTypes = {
-    &temperatures,
-    &distances,
-    &weights,
 };
 
 auto const stringToUnitMap = std::unordered_map<std::string_view, Unit> {

@@ -66,10 +66,6 @@ auto static kilograms_to_grams(double kilograms) -> double {
   return kilograms * 1000.;
 }
 
-auto static contains(std::unordered_set<Unit> const& unitSet, Unit unit) {
-  return unitSet.find(unit) != unitSet.cend();
-}
-
 auto constexpr static unit_type_of(Unit const u) -> UnitType {
   switch (u) {
   case Unit::celsius:
@@ -93,10 +89,10 @@ auto constexpr static unit_type_of(Unit const u) -> UnitType {
 // temperature)
 auto convert(Unit const fromUnit, Unit const toUnit, double const value)
     -> std::optional<double> {
-  for (auto const unitType : unitTypes) {
-    if (contains(*unitType, fromUnit) && !contains(*unitType, toUnit)) {
-      return {};
-    }
+  auto const fromUnitType = unit_type_of(fromUnit);
+  auto const toUnitType = unit_type_of(toUnit);
+  if (fromUnitType != toUnitType) {
+    return std::nullopt;
   }
 
   auto const base = [value, fromUnit]() {
