@@ -3,39 +3,6 @@
 
 #include "logic.hpp"
 
-// Distances
-auto static inches_to_meters(double inches) -> double {
-  return inches / INCHES_PER_METER;
-}
-
-auto static meters_to_inches(double meters) -> double {
-  return meters * INCHES_PER_METER;
-}
-
-auto static feet_to_meters(double feet) -> double {
-  return feet / FEET_PER_METER;
-}
-
-auto static meters_to_feet(double meters) -> double {
-  return meters * FEET_PER_METER;
-}
-
-auto static miles_to_meters(double miles) -> double {
-  return miles / MILES_PER_METER;
-}
-
-auto static meters_to_miles(double meters) -> double {
-  return meters * MILES_PER_METER;
-}
-
-auto static meters_to_kilometers(double meters) -> double {
-  return meters / 1000.;
-}
-
-auto static kilometers_to_meters(double kilometers) -> double {
-  return kilometers * 1000.;
-}
-
 // Temperatures
 auto static kelvin_to_fahrenheit(double kelvin) -> double {
   return kelvin * 9. / 5. - 459.67;
@@ -85,6 +52,37 @@ auto constexpr static unit_type_of(Unit const u) -> UnitType {
   }
 }
 
+auto constexpr convert_distance(Unit const fromUnit, Unit const toUnit,
+                                double const value) -> double {
+  auto const meters = [fromUnit, value]() -> Distance::Meters {
+    switch (fromUnit) {
+    case Unit::meter:
+      return Distance::Meters {value};
+    case Unit::kilometer:
+      return Distance::Meters {Distance::Kilometers {value}};
+    case Unit::mile:
+      return Distance::Meters {Distance::Imperial::Miles {value}};
+    case Unit::foot:
+      return Distance::Meters {Distance::Imperial::Feet {value}};
+    case Unit::inch:
+      return Distance::Meters {Distance::Imperial::Inches {value}};
+    }
+  }();
+
+  switch (toUnit) {
+  case Unit::meter:
+    return meters.count();
+  case Unit::kilometer:
+    return Distance::Kilometers {meters}.count();
+  case Unit::mile:
+    return Distance::Imperial::Miles {meters}.count();
+  case Unit::foot:
+    return Distance::Imperial::Feet {meters}.count();
+  case Unit::inch:
+    return Distance::Imperial::Inches {meters}.count();
+  }
+}
+
 // returns empty optional if units are of different types (e.g. distance and
 // temperature)
 auto convert(Unit const fromUnit, Unit const toUnit, double const value)
@@ -95,20 +93,13 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
     return std::nullopt;
   }
 
+  switch (fromUnitType) {
+  case UnitType::distance:
+    return convert_distance(fromUnit, toUnit, value);
+  }
+
   auto const base = [value, fromUnit]() {
     switch (fromUnit) {
-    // Distances
-    case Unit::meter:
-      return value;
-    case Unit::kilometer:
-      return kilometers_to_meters(value);
-    case Unit::mile:
-      return miles_to_meters(value);
-    case Unit::foot:
-      return feet_to_meters(value);
-    case Unit::inch:
-      return inches_to_meters(value);
-
     // Temperatures
     case Unit::kelvin:
       return value;
@@ -129,18 +120,6 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
 
   auto const result = [base, toUnit]() {
     switch (toUnit) {
-    // Distances
-    case Unit::meter:
-      return base;
-    case Unit::kilometer:
-      return meters_to_kilometers(base);
-    case Unit::mile:
-      return meters_to_miles(base);
-    case Unit::foot:
-      return meters_to_feet(base);
-    case Unit::inch:
-      return meters_to_inches(base);
-
     // Temperatures
     case Unit::kelvin:
       return base;
