@@ -20,19 +20,6 @@ auto static kelvin_to_celsius(double kelvin) -> double {
   return kelvin - 273.15;
 }
 
-// Weights
-auto static lbs_to_grams(double lbs) -> double { return lbs / LBS_PER_GRAM; }
-
-auto static grams_to_lbs(double grams) -> double {
-  return grams * LBS_PER_GRAM;
-}
-
-auto static grams_to_kilograms(double grams) -> double { return grams / 1000.; }
-
-auto static kilograms_to_grams(double kilograms) -> double {
-  return kilograms * 1000.;
-}
-
 auto constexpr static unit_type_of(Unit const u) -> UnitType {
   switch (u) {
   case Unit::celsius:
@@ -83,6 +70,29 @@ auto constexpr convert_distance(Unit const fromUnit, Unit const toUnit,
   }
 }
 
+auto constexpr convert_weight(Unit const fromUnit, Unit const toUnit,
+                              double const value) -> double {
+  auto const grams = [fromUnit, value]() -> Weight::Grams {
+    switch (fromUnit) {
+    case Unit::gram:
+      return Weight::Grams {value};
+    case Unit::kilogram:
+      return Weight::Kilograms {value};
+    case Unit::lb:
+      return Weight::Imperial::Pounds {value};
+    }
+  }();
+
+  switch (toUnit) {
+  case Unit::gram:
+    return grams.count();
+  case Unit::kilogram:
+    return Weight::Kilograms {grams}.count();
+  case Unit::lb:
+    return Weight::Imperial::Pounds {grams}.count();
+  }
+}
+
 // returns empty optional if units are of different types (e.g. distance and
 // temperature)
 auto convert(Unit const fromUnit, Unit const toUnit, double const value)
@@ -96,6 +106,8 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
   switch (fromUnitType) {
   case UnitType::distance:
     return convert_distance(fromUnit, toUnit, value);
+  case UnitType::weight:
+    return convert_weight(fromUnit, toUnit, value);
   }
 
   auto const base = [value, fromUnit]() {
@@ -107,14 +119,6 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
       return celsius_to_kelvin(value);
     case Unit::fahrenheit:
       return fahrenheit_to_kelvin(value);
-
-    // Weight
-    case Unit::gram:
-      return value;
-    case Unit::kilogram:
-      return kilograms_to_grams(value);
-    case Unit::lb:
-      return lbs_to_grams(value);
     }
   }();
 
@@ -127,14 +131,6 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
       return kelvin_to_celsius(base);
     case Unit::fahrenheit:
       return kelvin_to_fahrenheit(base);
-
-    // Weight
-    case Unit::gram:
-      return base;
-    case Unit::kilogram:
-      return grams_to_kilograms(base);
-    case Unit::lb:
-      return grams_to_lbs(base);
     }
   }();
 
