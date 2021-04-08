@@ -55,18 +55,23 @@ auto main(int argc, char** argv) -> int {
     return EXIT_FAILURE;
   }
 
-  double value;
-  try {
-    value = stod(valueString);
-  } catch (const std::invalid_argument&) {
-    cerr << "[Value] is not a valid number (" << valueString << ").\n";
-    return EXIT_FAILURE;
-  } catch (const std::out_of_range&) {
-    cerr << "[Value] is out of range for a double (" << valueString << ").\n";
+  auto const value = [&valueString]() -> std::optional<double> {
+    try {
+      return stod(valueString);
+    } catch (const std::invalid_argument&) {
+      cerr << "[Value] is not a valid number (" << valueString << ").\n";
+      return std::nullopt;
+    } catch (const std::out_of_range&) {
+      cerr << "[Value] is out of range for a double (" << valueString << ").\n";
+      return std::nullopt;
+    }
+  }();
+
+  if (!value) {
     return EXIT_FAILURE;
   }
 
-  auto const result = convert(*fromUnit, *toUnit, value);
+  auto const result = convert(*fromUnit, *toUnit, *value);
 
   if (result) {
     std::cout << *result << '\n';
