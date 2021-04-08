@@ -36,7 +36,7 @@ auto main(int argc, char** argv) -> int {
       [](std::string_view const unitString) -> std::optional<Unit> {
     try {
       return Unit {std::string {unitString}};
-    } catch (const std::out_of_range& e) {
+    } catch (const std::out_of_range&) {
       return {};
     }
   };
@@ -56,10 +56,10 @@ auto main(int argc, char** argv) -> int {
   double value;
   try {
     value = stod(valueString);
-  } catch (const std::invalid_argument& e) {
+  } catch (const std::invalid_argument&) {
     std::cerr << "[Value] is not a valid number (" << valueString << ").\n";
     return EXIT_FAILURE;
-  } catch (const std::out_of_range& e) {
+  } catch (const std::out_of_range&) {
     std::cerr << "[Value] is out of range for a double (" << valueString
               << ").\n";
     return EXIT_FAILURE;
