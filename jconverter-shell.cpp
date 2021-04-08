@@ -7,24 +7,27 @@
 #include "logic.hpp"
 
 using namespace std::string_view_literals;
+using std::cerr;
+using std::string;
+using std::string_view;
 
 auto main(int argc, char** argv) -> int {
   if (argc != 3 && argc != 4) {
-    std::cerr << "Usage: " << argv[0] << " [From] [To] [Value | -]\n\n";
-    std::cerr << "Available units:\n";
+    cerr << "Usage: " << argv[0] << " [From] [To] [Value | -]\n\n";
+    cerr << "Available units:\n";
     for (auto unit : unitStrings) {
-      std::cerr << '\t' << unit << '\n';
+      cerr << '\t' << unit << '\n';
     }
     return EXIT_FAILURE;
   }
 
-  auto const fromString = std::string_view {argv[1]};
-  auto const toString = std::string_view {argv[2]};
+  auto const fromString = string_view {argv[1]};
+  auto const toString = string_view {argv[2]};
 
   // If the value arg is omitted or "-" get the string from stdin
-  auto const valueString = [argc, argv]() -> std::string {
+  auto const valueString = [argc, argv]() -> string {
     if ((argc == 3) || ("-"sv == argv[3])) {
-      auto tmp = std::string {};
+      auto tmp = string {};
       std::cin >> tmp;
       return tmp;
     }
@@ -32,9 +35,9 @@ auto main(int argc, char** argv) -> int {
   }();
 
   auto const stringToUnit =
-      [](std::string_view const unitString) -> std::optional<Unit> {
+      [](string_view const unitString) -> std::optional<Unit> {
     try {
-      return Unit {std::string {unitString}};
+      return Unit {string {unitString}};
     } catch (const std::out_of_range&) {
       return {};
     }
@@ -42,13 +45,13 @@ auto main(int argc, char** argv) -> int {
 
   auto const fromUnit = stringToUnit(fromString);
   if (!fromUnit) {
-    std::cerr << "[From] is not a valid unit (" << fromString << ").\n";
+    cerr << "[From] is not a valid unit (" << fromString << ").\n";
     return EXIT_FAILURE;
   }
 
   auto const toUnit = stringToUnit(toString);
   if (!toUnit) {
-    std::cerr << "[To] is not a valid unit (" << toString << ").\n";
+    cerr << "[To] is not a valid unit (" << toString << ").\n";
     return EXIT_FAILURE;
   }
 
@@ -56,11 +59,10 @@ auto main(int argc, char** argv) -> int {
   try {
     value = stod(valueString);
   } catch (const std::invalid_argument&) {
-    std::cerr << "[Value] is not a valid number (" << valueString << ").\n";
+    cerr << "[Value] is not a valid number (" << valueString << ").\n";
     return EXIT_FAILURE;
   } catch (const std::out_of_range&) {
-    std::cerr << "[Value] is out of range for a double (" << valueString
-              << ").\n";
+    cerr << "[Value] is out of range for a double (" << valueString << ").\n";
     return EXIT_FAILURE;
   }
 
@@ -69,6 +71,6 @@ auto main(int argc, char** argv) -> int {
   if (result) {
     std::cout << *result << '\n';
   } else {
-    std::cerr << "ERR: Units are of different types.";
+    cerr << "ERR: Units are of different types.";
   }
 }
