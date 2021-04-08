@@ -93,6 +93,29 @@ auto constexpr convert_weight(Unit const fromUnit, Unit const toUnit,
   }
 }
 
+auto constexpr convert_temperature(Unit const fromUnit, Unit const toUnit,
+                                   double const value) -> double {
+  auto const kelvin = [fromUnit, value]() -> double {
+    switch (fromUnit) {
+    case Unit::kelvin:
+      return value;
+    case Unit::celsius:
+      return celsius_to_kelvin(value);
+    case Unit::fahrenheit:
+      return fahrenheit_to_kelvin(value);
+    }
+  }();
+
+  switch (toUnit) {
+  case Unit::kelvin:
+    return kelvin;
+  case Unit::celsius:
+    return kelvin_to_celsius(kelvin);
+  case Unit::fahrenheit:
+    return kelvin_to_fahrenheit(kelvin);
+  }
+}
+
 // returns empty optional if units are of different types (e.g. distance and
 // temperature)
 auto convert(Unit const fromUnit, Unit const toUnit, double const value)
@@ -108,31 +131,7 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
     return convert_distance(fromUnit, toUnit, value);
   case UnitType::weight:
     return convert_weight(fromUnit, toUnit, value);
+  case UnitType::temperature:
+    return convert_temperature(fromUnit, toUnit, value);
   }
-
-  auto const base = [value, fromUnit]() {
-    switch (fromUnit) {
-    // Temperatures
-    case Unit::kelvin:
-      return value;
-    case Unit::celsius:
-      return celsius_to_kelvin(value);
-    case Unit::fahrenheit:
-      return fahrenheit_to_kelvin(value);
-    }
-  }();
-
-  auto const result = [base, toUnit]() {
-    switch (toUnit) {
-    // Temperatures
-    case Unit::kelvin:
-      return base;
-    case Unit::celsius:
-      return kelvin_to_celsius(base);
-    case Unit::fahrenheit:
-      return kelvin_to_fahrenheit(base);
-    }
-  }();
-
-  return result;
 }
