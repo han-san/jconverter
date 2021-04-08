@@ -123,21 +123,22 @@ auto constexpr convert_distance(Unit::Distance const fromUnit,
   return from_meters(to_meters(fromUnit, value), toUnit);
 }
 
-auto constexpr convert_weight(Unit::Weight const fromUnit,
-                              Unit::Weight const toUnit, double const value)
+auto constexpr to_grams(Unit::Weight const fromUnit, double const value)
+    -> Weight::Grams {
+  using namespace Weight;
+  switch (fromUnit) {
+  case Unit::Weight::gram:
+    return Grams {value};
+  case Unit::Weight::kilogram:
+    return Kilograms {value};
+  case Unit::Weight::lb:
+    return Imperial::Pounds {value};
+  }
+}
+
+auto constexpr from_grams(Weight::Grams const grams, Unit::Weight const toUnit)
     -> double {
   using namespace Weight;
-  auto const grams = [fromUnit, value]() -> Grams {
-    switch (fromUnit) {
-    case Unit::Weight::gram:
-      return Grams {value};
-    case Unit::Weight::kilogram:
-      return Kilograms {value};
-    case Unit::Weight::lb:
-      return Imperial::Pounds {value};
-    }
-  }();
-
   switch (toUnit) {
   case Unit::Weight::gram:
     return grams.count();
@@ -148,20 +149,27 @@ auto constexpr convert_weight(Unit::Weight const fromUnit,
   }
 }
 
-auto constexpr convert_temperature(Unit::Temperature const fromUnit,
-                                   Unit::Temperature const toUnit,
-                                   double const value) -> double {
-  auto const kelvin = [fromUnit, value]() -> double {
-    switch (fromUnit) {
-    case Unit::Temperature::kelvin:
-      return value;
-    case Unit::Temperature::celsius:
-      return celsius_to_kelvin(value);
-    case Unit::Temperature::fahrenheit:
-      return fahrenheit_to_kelvin(value);
-    }
-  }();
+auto constexpr convert_weight(Unit::Weight const fromUnit,
+                              Unit::Weight const toUnit, double const value)
+    -> double {
 
+  return from_grams(to_grams(fromUnit, value), toUnit);
+}
+
+auto constexpr to_kelvin(Unit::Temperature const fromUnit, double const value)
+    -> double {
+  switch (fromUnit) {
+  case Unit::Temperature::kelvin:
+    return value;
+  case Unit::Temperature::celsius:
+    return celsius_to_kelvin(value);
+  case Unit::Temperature::fahrenheit:
+    return fahrenheit_to_kelvin(value);
+  }
+}
+
+auto constexpr from_kelvin(double const kelvin, Unit::Temperature const toUnit)
+    -> double {
   switch (toUnit) {
   case Unit::Temperature::kelvin:
     return kelvin;
@@ -170,6 +178,12 @@ auto constexpr convert_temperature(Unit::Temperature const fromUnit,
   case Unit::Temperature::fahrenheit:
     return kelvin_to_fahrenheit(kelvin);
   }
+}
+
+auto constexpr convert_temperature(Unit::Temperature const fromUnit,
+                                   Unit::Temperature const toUnit,
+                                   double const value) -> double {
+  return from_kelvin(to_kelvin(fromUnit, value), toUnit);
 }
 
 // returns empty optional if units are of different types (e.g. distance and
