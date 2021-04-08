@@ -136,19 +136,19 @@ auto const INCHES_PER_METER = 39.3700787402;
 enum class UnitTypes { temperature, distance, weight };
 
 enum class Unit {
-  CELSIUS,
-  FAHRENHEIT,
-  KELVIN,
+  celsius,
+  fahrenheit,
+  kelvin,
 
-  KILOMETER,
-  METER,
-  MILE,
-  FOOT,
-  INCH,
+  kilometer,
+  meter,
+  mile,
+  foot,
+  inch,
 
-  LB,
-  GRAM,
-  KILOGRAM,
+  lb,
+  gram,
+  kilogram,
 };
 
 auto const unitStrings = std::array {
@@ -164,19 +164,19 @@ auto const unitStrings = std::array {
 };
 
 auto const temperatures = std::unordered_set<Unit> {
-    Unit::CELSIUS,
-    Unit::FAHRENHEIT,
-    Unit::KELVIN,
+    Unit::celsius,
+    Unit::fahrenheit,
+    Unit::kelvin,
 };
 
 auto const distances = std::unordered_set<Unit> {
-    Unit::KILOMETER, Unit::METER, Unit::MILE, Unit::FOOT, Unit::INCH,
+    Unit::kilometer, Unit::meter, Unit::mile, Unit::foot, Unit::inch,
 };
 
 auto const weights = std::unordered_set<Unit> {
-    Unit::LB,
-    Unit::KILOGRAM,
-    Unit::GRAM,
+    Unit::lb,
+    Unit::kilogram,
+    Unit::gram,
 };
 
 auto const unitTypes = {
@@ -186,36 +186,36 @@ auto const unitTypes = {
 };
 
 auto const stringToUnitMap = std::unordered_map<std::string_view, Unit> {
-    {"celsius", Unit::CELSIUS},
-    {"c", Unit::CELSIUS},
-    {"fahrenheit", Unit::FAHRENHEIT},
-    {"f", Unit::FAHRENHEIT},
-    {"kelvin", Unit::KELVIN},
-    {"k", Unit::KELVIN},
+    {"celsius", Unit::celsius},
+    {"c", Unit::celsius},
+    {"fahrenheit", Unit::fahrenheit},
+    {"f", Unit::fahrenheit},
+    {"kelvin", Unit::kelvin},
+    {"k", Unit::kelvin},
 
-    {"meter", Unit::METER},
-    {"meters", Unit::METER},
-    {"m", Unit::METER},
-    {"km", Unit::KILOMETER},
-    {"kilometer", Unit::KILOMETER},
-    {"kilometers", Unit::KILOMETER},
-    {"mile", Unit::MILE},
-    {"miles", Unit::MILE},
-    {"foot", Unit::FOOT},
-    {"feet", Unit::FOOT},
-    {"inch", Unit::INCH},
-    {"inches", Unit::INCH},
+    {"meter", Unit::meter},
+    {"meters", Unit::meter},
+    {"m", Unit::meter},
+    {"km", Unit::kilometer},
+    {"kilometer", Unit::kilometer},
+    {"kilometers", Unit::kilometer},
+    {"mile", Unit::mile},
+    {"miles", Unit::mile},
+    {"foot", Unit::foot},
+    {"feet", Unit::foot},
+    {"inch", Unit::inch},
+    {"inches", Unit::inch},
 
-    {"pound", Unit::LB},
-    {"pounds", Unit::LB},
-    {"lbs", Unit::LB},
-    {"lb", Unit::LB},
-    {"gram", Unit::GRAM},
-    {"g", Unit::GRAM},
-    {"grams", Unit::GRAM},
-    {"kg", Unit::KILOGRAM},
-    {"kilogram", Unit::KILOGRAM},
-    {"kilograms", Unit::KILOGRAM},
+    {"pound", Unit::lb},
+    {"pounds", Unit::lb},
+    {"lbs", Unit::lb},
+    {"lb", Unit::lb},
+    {"gram", Unit::gram},
+    {"g", Unit::gram},
+    {"grams", Unit::gram},
+    {"kg", Unit::kilogram},
+    {"kilogram", Unit::kilogram},
+    {"kilograms", Unit::kilogram},
 };
 
 auto convert(Unit fromUnit, Unit toUnit, double value) -> std::optional<double>;

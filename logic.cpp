@@ -83,31 +83,31 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
   auto const base = [value, fromUnit]() {
     switch (fromUnit) {
     // Distances
-    case Unit::METER:
+    case Unit::meter:
       return value;
-    case Unit::KILOMETER:
+    case Unit::kilometer:
       return kilometers_to_meters(value);
-    case Unit::MILE:
+    case Unit::mile:
       return miles_to_meters(value);
-    case Unit::FOOT:
+    case Unit::foot:
       return feet_to_meters(value);
-    case Unit::INCH:
+    case Unit::inch:
       return inches_to_meters(value);
 
     // Temperatures
-    case Unit::KELVIN:
+    case Unit::kelvin:
       return value;
-    case Unit::CELSIUS:
+    case Unit::celsius:
       return celsius_to_kelvin(value);
-    case Unit::FAHRENHEIT:
+    case Unit::fahrenheit:
       return fahrenheit_to_kelvin(value);
 
     // Weight
-    case Unit::GRAM:
+    case Unit::gram:
       return value;
-    case Unit::KILOGRAM:
+    case Unit::kilogram:
       return kilograms_to_grams(value);
-    case Unit::LB:
+    case Unit::lb:
       return lbs_to_grams(value);
     }
   }();
@@ -115,31 +115,31 @@ auto convert(Unit const fromUnit, Unit const toUnit, double const value)
   auto const result = [base, toUnit]() {
     switch (toUnit) {
     // Distances
-    case Unit::METER:
+    case Unit::meter:
       return base;
-    case Unit::KILOMETER:
+    case Unit::kilometer:
       return meters_to_kilometers(base);
-    case Unit::MILE:
+    case Unit::mile:
       return meters_to_miles(base);
-    case Unit::FOOT:
+    case Unit::foot:
       return meters_to_feet(base);
-    case Unit::INCH:
+    case Unit::inch:
       return meters_to_inches(base);
 
     // Temperatures
-    case Unit::KELVIN:
+    case Unit::kelvin:
       return base;
-    case Unit::CELSIUS:
+    case Unit::celsius:
       return kelvin_to_celsius(base);
-    case Unit::FAHRENHEIT:
+    case Unit::fahrenheit:
       return kelvin_to_fahrenheit(base);
 
     // Weight
-    case Unit::GRAM:
+    case Unit::gram:
       return base;
-    case Unit::KILOGRAM:
+    case Unit::kilogram:
       return grams_to_kilograms(base);
-    case Unit::LB:
+    case Unit::lb:
       return grams_to_lbs(base);
     }
   }();
