@@ -21,13 +21,13 @@ auto main(int argc, char** argv) -> int {
     return EXIT_FAILURE;
   }
 
-  auto const fromString = string_view {argv[1]};
-  auto const toString = string_view {argv[2]};
+  string_view const fromString {argv[1]};
+  string_view const toString {argv[2]};
 
   // If the value arg is omitted or "-" get the string from stdin
   auto const valueString = [argc, argv]() -> string {
     if ((argc == 3) || ("-"sv == argv[3])) {
-      auto tmp = string {};
+      string tmp;
       std::cin >> tmp;
       return tmp;
     }

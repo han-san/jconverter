@@ -225,7 +225,7 @@ private:
   }
 
   std::unordered_map<std::string_view,
-                     Variant> const static inline stringToUnitMap = {
+                     Variant> const static inline stringToUnitMap {
       {"celsius", Temperature::celsius},
       {"c", Temperature::celsius},
       {"fahrenheit", Temperature::fahrenheit},
@@ -299,7 +299,7 @@ private:
   Variant m_unit {};
 };
 
-auto const unitStrings = std::array {
+std::array const unitStrings {
     std::string_view {"Celsius"},       std::string_view {"Fahrenheit"},
     std::string_view {"Kelvin"},
 
