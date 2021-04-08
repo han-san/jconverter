@@ -22,14 +22,13 @@ auto main(int argc, char** argv) -> int {
   auto const toString = std::string_view {argv[2]};
 
   // If the value arg is omitted or "-" get the string from stdin
-  auto const valueString = [argc, argv]() {
-    auto tmp = std::string {};
+  auto const valueString = [argc, argv]() -> std::string {
     if ((argc == 3) || ("-"sv == argv[3])) {
+      auto tmp = std::string {};
       std::cin >> tmp;
-    } else {
-      tmp = argv[3];
+      return tmp;
     }
-    return tmp;
+    return argv[3];
   }();
 
   auto const stringToUnit =
