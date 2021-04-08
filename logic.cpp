@@ -70,6 +70,25 @@ auto static contains(std::unordered_set<Unit> const& unitSet, Unit unit) {
   return unitSet.find(unit) != unitSet.cend();
 }
 
+auto constexpr static unit_type_of(Unit const u) -> UnitType {
+  switch (u) {
+  case Unit::celsius:
+  case Unit::fahrenheit:
+  case Unit::kelvin:
+    return UnitType::temperature;
+  case Unit::kilometer:
+  case Unit::meter:
+  case Unit::mile:
+  case Unit::foot:
+  case Unit::inch:
+    return UnitType::distance;
+  case Unit::lb:
+  case Unit::gram:
+  case Unit::kilogram:
+    return UnitType::weight;
+  }
+}
+
 // returns empty optional if units are of different types (e.g. distance and
 // temperature)
 auto convert(Unit const fromUnit, Unit const toUnit, double const value)

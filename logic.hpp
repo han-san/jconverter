@@ -133,7 +133,7 @@ auto const LBS_PER_GRAM = 0.0022046226218;
 auto const FEET_PER_METER = 3.280839895;
 auto const INCHES_PER_METER = 39.3700787402;
 
-enum class UnitTypes { temperature, distance, weight };
+enum class UnitType { temperature, distance, weight };
 
 enum class Unit {
   celsius,
