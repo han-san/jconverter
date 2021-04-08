@@ -19,57 +19,58 @@ auto static kelvin_to_celsius(double kelvin) -> double {
   return kelvin - 273.15;
 }
 
-auto constexpr convert_distance(Unit::Distance const fromUnit,
-                                Unit::Distance const toUnit, double const value)
-    -> double {
+auto constexpr to_meters(Unit::Distance const fromUnit, double const value)
+    -> Distance::Meters {
   using namespace Distance;
-  auto const meters = [fromUnit, value]() -> Meters {
-    switch (fromUnit) {
-    case Unit::Distance::millimeter:
-      return Millimeters {value};
-    case Unit::Distance::centimeter:
-      return Centimeters {value};
-    case Unit::Distance::decimeter:
-      return Decimeters {value};
-    case Unit::Distance::meter:
-      return Meters {value};
-    case Unit::Distance::kilometer:
-      return Kilometers {value};
-    case Unit::Distance::lightyear:
+  switch (fromUnit) {
+  case Unit::Distance::millimeter:
+    return Millimeters {value};
+  case Unit::Distance::centimeter:
+    return Centimeters {value};
+  case Unit::Distance::decimeter:
+    return Decimeters {value};
+  case Unit::Distance::meter:
+    return Meters {value};
+  case Unit::Distance::kilometer:
+    return Kilometers {value};
+  case Unit::Distance::lightyear:
 
-      return Lightyears {value};
-    case Unit::Distance::thou:
+    return Lightyears {value};
+  case Unit::Distance::thou:
 
-      return Imperial::Thou {value};
-    case Unit::Distance::barleycorn:
-      return Imperial::Barleycorns {value};
-    case Unit::Distance::inch:
-      return Imperial::Inches {value};
-    case Unit::Distance::foot:
-      return Imperial::Feet {value};
-    case Unit::Distance::yard:
-      return Imperial::Yards {value};
-    case Unit::Distance::furlong:
-      return Imperial::Furlongs {value};
-    case Unit::Distance::mile:
-      return Imperial::Miles {value};
-    case Unit::Distance::league:
-      return Imperial::Leagues {value};
+    return Imperial::Thou {value};
+  case Unit::Distance::barleycorn:
+    return Imperial::Barleycorns {value};
+  case Unit::Distance::inch:
+    return Imperial::Inches {value};
+  case Unit::Distance::foot:
+    return Imperial::Feet {value};
+  case Unit::Distance::yard:
+    return Imperial::Yards {value};
+  case Unit::Distance::furlong:
+    return Imperial::Furlongs {value};
+  case Unit::Distance::mile:
+    return Imperial::Miles {value};
+  case Unit::Distance::league:
+    return Imperial::Leagues {value};
 
-    case Unit::Distance::fathom:
-      return Imperial::Fathoms {value};
-    case Unit::Distance::cable:
-      return Imperial::Cables {value};
-    case Unit::Distance::nauticalMile:
-      return Imperial::NauticleMiles {value};
+  case Unit::Distance::fathom:
+    return Imperial::Fathoms {value};
+  case Unit::Distance::cable:
+    return Imperial::Cables {value};
+  case Unit::Distance::nauticalMile:
+    return Imperial::NauticleMiles {value};
 
-    case Unit::Distance::link:
-      return Imperial::Links {value};
-    case Unit::Distance::rod:
-      return Imperial::Rods {value};
-    }
-  }();
+  case Unit::Distance::link:
+    return Imperial::Links {value};
+  case Unit::Distance::rod:
+    return Imperial::Rods {value};
+  }
+}
 
+auto constexpr from_meters(Distance::Meters const meters,
+                           Unit::Distance const toUnit) -> double {
+  using namespace Distance;
   switch (toUnit) {
   case Unit::Distance::millimeter:
     return Millimeters {meters}.count();
@@ -114,6 +115,12 @@ auto constexpr convert_distance(Unit::Distance const fromUnit,
   case Unit::Distance::rod:
     return Imperial::Rods {meters}.count();
   }
+}
+
+auto constexpr convert_distance(Unit::Distance const fromUnit,
+                                Unit::Distance const toUnit, double const value)
+    -> double {
+  return from_meters(to_meters(fromUnit, value), toUnit);
 }
 
 auto constexpr convert_weight(Unit::Weight const fromUnit,
