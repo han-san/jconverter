@@ -22,110 +22,112 @@ auto static kelvin_to_celsius(double kelvin) -> double {
 auto constexpr convert_distance(Unit::Distance const fromUnit,
                                 Unit::Distance const toUnit, double const value)
     -> double {
-  auto const meters = [fromUnit, value]() -> Distance::Meters {
+  using namespace Distance;
+  auto const meters = [fromUnit, value]() -> Meters {
     switch (fromUnit) {
     case Unit::Distance::millimeter:
-      return Distance::Millimeters {value};
+      return Millimeters {value};
     case Unit::Distance::centimeter:
-      return Distance::Centimeters {value};
+      return Centimeters {value};
     case Unit::Distance::decimeter:
-      return Distance::Decimeters {value};
+      return Decimeters {value};
     case Unit::Distance::meter:
-      return Distance::Meters {value};
+      return Meters {value};
     case Unit::Distance::kilometer:
-      return Distance::Kilometers {value};
+      return Kilometers {value};
     case Unit::Distance::lightyear:
 
-      return Distance::Lightyears {value};
+      return Lightyears {value};
     case Unit::Distance::thou:
 
-      return Distance::Imperial::Thou {value};
+      return Imperial::Thou {value};
     case Unit::Distance::barleycorn:
-      return Distance::Imperial::Barleycorns {value};
+      return Imperial::Barleycorns {value};
     case Unit::Distance::inch:
-      return Distance::Imperial::Inches {value};
+      return Imperial::Inches {value};
     case Unit::Distance::foot:
-      return Distance::Imperial::Feet {value};
+      return Imperial::Feet {value};
     case Unit::Distance::yard:
-      return Distance::Imperial::Yards {value};
+      return Imperial::Yards {value};
     case Unit::Distance::furlong:
-      return Distance::Imperial::Furlongs {value};
+      return Imperial::Furlongs {value};
     case Unit::Distance::mile:
-      return Distance::Imperial::Miles {value};
+      return Imperial::Miles {value};
     case Unit::Distance::league:
-      return Distance::Imperial::Leagues {value};
+      return Imperial::Leagues {value};
 
     case Unit::Distance::fathom:
-      return Distance::Imperial::Fathoms {value};
+      return Imperial::Fathoms {value};
     case Unit::Distance::cable:
-      return Distance::Imperial::Cables {value};
+      return Imperial::Cables {value};
     case Unit::Distance::nauticalMile:
-      return Distance::Imperial::NauticleMiles {value};
+      return Imperial::NauticleMiles {value};
 
     case Unit::Distance::link:
-      return Distance::Imperial::Links {value};
+      return Imperial::Links {value};
     case Unit::Distance::rod:
-      return Distance::Imperial::Rods {value};
+      return Imperial::Rods {value};
     }
   }();
 
   switch (toUnit) {
   case Unit::Distance::millimeter:
-    return Distance::Millimeters {meters}.count();
+    return Millimeters {meters}.count();
   case Unit::Distance::centimeter:
-    return Distance::Centimeters {meters}.count();
+    return Centimeters {meters}.count();
   case Unit::Distance::decimeter:
-    return Distance::Decimeters {meters}.count();
+    return Decimeters {meters}.count();
   case Unit::Distance::meter:
     return meters.count();
   case Unit::Distance::kilometer:
-    return Distance::Kilometers {meters}.count();
+    return Kilometers {meters}.count();
 
   case Unit::Distance::lightyear:
-    return Distance::Lightyears {meters}.count();
+    return Lightyears {meters}.count();
   case Unit::Distance::thou:
 
-    return Distance::Imperial::Thou {meters}.count();
+    return Imperial::Thou {meters}.count();
   case Unit::Distance::barleycorn:
-    return Distance::Imperial::Barleycorns {meters}.count();
+    return Imperial::Barleycorns {meters}.count();
   case Unit::Distance::inch:
-    return Distance::Imperial::Inches {meters}.count();
+    return Imperial::Inches {meters}.count();
   case Unit::Distance::foot:
-    return Distance::Imperial::Feet {meters}.count();
+    return Imperial::Feet {meters}.count();
   case Unit::Distance::yard:
-    return Distance::Imperial::Yards {meters}.count();
+    return Imperial::Yards {meters}.count();
   case Unit::Distance::furlong:
-    return Distance::Imperial::Furlongs {meters}.count();
+    return Imperial::Furlongs {meters}.count();
   case Unit::Distance::mile:
-    return Distance::Imperial::Miles {meters}.count();
+    return Imperial::Miles {meters}.count();
   case Unit::Distance::league:
-    return Distance::Imperial::Leagues {meters}.count();
+    return Imperial::Leagues {meters}.count();
 
   case Unit::Distance::fathom:
-    return Distance::Imperial::Fathoms {meters}.count();
+    return Imperial::Fathoms {meters}.count();
   case Unit::Distance::cable:
-    return Distance::Imperial::Cables {meters}.count();
+    return Imperial::Cables {meters}.count();
   case Unit::Distance::nauticalMile:
-    return Distance::Imperial::NauticleMiles {meters}.count();
+    return Imperial::NauticleMiles {meters}.count();
 
   case Unit::Distance::link:
-    return Distance::Imperial::Links {meters}.count();
+    return Imperial::Links {meters}.count();
   case Unit::Distance::rod:
-    return Distance::Imperial::Rods {meters}.count();
+    return Imperial::Rods {meters}.count();
   }
 }
 
 auto constexpr convert_weight(Unit::Weight const fromUnit,
                               Unit::Weight const toUnit, double const value)
     -> double {
-  auto const grams = [fromUnit, value]() -> Weight::Grams {
+  using namespace Weight;
+  auto const grams = [fromUnit, value]() -> Grams {
     switch (fromUnit) {
     case Unit::Weight::gram:
-      return Weight::Grams {value};
+      return Grams {value};
     case Unit::Weight::kilogram:
-      return Weight::Kilograms {value};
+      return Kilograms {value};
     case Unit::Weight::lb:
-      return Weight::Imperial::Pounds {value};
+      return Imperial::Pounds {value};
     }
   }();
 
@@ -133,9 +135,9 @@ auto constexpr convert_weight(Unit::Weight const fromUnit,
   case Unit::Weight::gram:
     return grams.count();
   case Unit::Weight::kilogram:
-    return Weight::Kilograms {grams}.count();
+    return Kilograms {grams}.count();
   case Unit::Weight::lb:
-    return Weight::Imperial::Pounds {grams}.count();
+    return Imperial::Pounds {grams}.count();
   }
 }
 
