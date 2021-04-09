@@ -410,12 +410,6 @@ auto constexpr from_meters(Distance::Meters const meters,
   }
 }
 
-auto constexpr convert_distance(Unit::Distance const fromUnit,
-                                Unit::Distance const toUnit, double const value)
-    -> double {
-  return from_meters(to_meters(fromUnit, value), toUnit);
-}
-
 auto constexpr to_grams(Unit::Weight const fromUnit, double const value)
     -> Weight::Grams {
   using namespace Weight;
@@ -488,13 +482,6 @@ auto constexpr from_grams(Weight::Grams const grams, Unit::Weight const toUnit)
   }
 }
 
-auto constexpr convert_weight(Unit::Weight const fromUnit,
-                              Unit::Weight const toUnit, double const value)
-    -> double {
-
-  return from_grams(to_grams(fromUnit, value), toUnit);
-}
-
 auto constexpr to_kelvin(Unit::Temperature const fromUnit, double const value)
     -> double {
   switch (fromUnit) {
@@ -517,12 +504,6 @@ auto constexpr from_kelvin(double const kelvin, Unit::Temperature const toUnit)
   case Unit::Temperature::fahrenheit:
     return kelvin_to_fahrenheit(kelvin);
   }
-}
-
-auto constexpr convert_temperature(Unit::Temperature const fromUnit,
-                                   Unit::Temperature const toUnit,
-                                   double const value) -> double {
-  return from_kelvin(to_kelvin(fromUnit, value), toUnit);
 }
 
 auto constexpr to_liters(Unit::Volume fromUnit, double const value)
@@ -571,13 +552,33 @@ auto constexpr from_liters(Volume::Liters const liters, Unit::Volume toUnit)
   }
 }
 
-auto constexpr convert_volume(Unit::Volume const fromUnit,
-                              Unit::Volume const toUnit, double const value)
+} // namespace impl
+
+auto constexpr convert(Unit::Distance const fromUnit,
+                       Unit::Distance const toUnit, double const value)
     -> double {
-  return from_liters(to_liters(fromUnit, value), toUnit);
+  using namespace impl;
+  return from_meters(to_meters(fromUnit, value), toUnit);
 }
 
-} // namespace impl
+auto constexpr convert(Unit::Weight const fromUnit, Unit::Weight const toUnit,
+                       double const value) -> double {
+  using namespace impl;
+  return from_grams(to_grams(fromUnit, value), toUnit);
+}
+
+auto constexpr convert(Unit::Temperature const fromUnit,
+                       Unit::Temperature const toUnit, double const value)
+    -> double {
+  using namespace impl;
+  return from_kelvin(to_kelvin(fromUnit, value), toUnit);
+}
+
+auto constexpr convert(Unit::Volume const fromUnit, Unit::Volume const toUnit,
+                       double const value) -> double {
+  using namespace impl;
+  return from_liters(to_liters(fromUnit, value), toUnit);
+}
 
 // returns empty optional if units are of different types (e.g. distance and
 // temperature)
@@ -589,14 +590,12 @@ auto constexpr convert(Unit const& fromUnit, Unit const& toUnit,
 
   switch (fromUnit.type()) {
   case Unit::Type::distance:
-    return impl::convert_distance(fromUnit.distance(), toUnit.distance(),
-                                  value);
+    return convert(fromUnit.distance(), toUnit.distance(), value);
   case Unit::Type::weight:
-    return impl::convert_weight(fromUnit.weight(), toUnit.weight(), value);
+    return convert(fromUnit.weight(), toUnit.weight(), value);
   case Unit::Type::temperature:
-    return impl::convert_temperature(fromUnit.temperature(),
-                                     toUnit.temperature(), value);
+    return convert(fromUnit.temperature(), toUnit.temperature(), value);
   case Unit::Type::volume:
-    return impl::convert_volume(fromUnit.volume(), toUnit.volume(), value);
+    return convert(fromUnit.volume(), toUnit.volume(), value);
   }
 }
