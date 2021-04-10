@@ -1,12 +1,10 @@
 #pragma once
 
-#include <algorithm>
 #include <array>
 #include <chrono>
 #include <optional>
 #include <ratio>
 #include <string_view>
-#include <unordered_map>
 #include <variant>
 
 namespace Distance {
