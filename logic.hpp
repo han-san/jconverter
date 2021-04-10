@@ -359,6 +359,9 @@ auto constexpr to_meters(Unit::Distance const fromUnit, double const value)
   case Unit::Distance::rod:
     return Imperial::Rods {value};
   }
+  // Unreachable unless not all Unit::Distance enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr from_meters(Distance::Meters const meters,
@@ -408,6 +411,9 @@ auto constexpr from_meters(Distance::Meters const meters,
   case Unit::Distance::rod:
     return Imperial::Rods {meters}.count();
   }
+  // Unreachable unless not all Unit::Distance enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr to_grams(Unit::Weight const fromUnit, double const value)
@@ -444,6 +450,9 @@ auto constexpr to_grams(Unit::Weight const fromUnit, double const value)
   case Unit::Weight::slug:
     return Imperial::Slugs {value};
   }
+  // Unreachable unless not all Unit::Weight enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr from_grams(Weight::Grams const grams, Unit::Weight const toUnit)
@@ -480,6 +489,9 @@ auto constexpr from_grams(Weight::Grams const grams, Unit::Weight const toUnit)
   case Unit::Weight::slug:
     return Imperial::Slugs {grams}.count();
   }
+  // Unreachable unless not all Unit::Weight enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr to_kelvin(Unit::Temperature const fromUnit, double const value)
@@ -492,6 +504,9 @@ auto constexpr to_kelvin(Unit::Temperature const fromUnit, double const value)
   case Unit::Temperature::fahrenheit:
     return fahrenheit_to_kelvin(value);
   }
+  // Unreachable unless not all Unit::Temperature enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr from_kelvin(double const kelvin, Unit::Temperature const toUnit)
@@ -504,6 +519,9 @@ auto constexpr from_kelvin(double const kelvin, Unit::Temperature const toUnit)
   case Unit::Temperature::fahrenheit:
     return kelvin_to_fahrenheit(kelvin);
   }
+  // Unreachable unless not all Unit::Temperature enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr to_liters(Unit::Volume fromUnit, double const value)
@@ -527,6 +545,9 @@ auto constexpr to_liters(Unit::Volume fromUnit, double const value)
   case Unit::Volume::gallon:
     return Imperial::Gallons {value};
   }
+  // Unreachable unless not all Unit::Volume enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 auto constexpr from_liters(Volume::Liters const liters, Unit::Volume toUnit)
@@ -550,6 +571,9 @@ auto constexpr from_liters(Volume::Liters const liters, Unit::Volume toUnit)
   case Unit::Volume::gallon:
     return Imperial::Gallons {liters}.count();
   }
+  // Unreachable unless not all Unit::Volume enumerators are covered in the
+  // switch.
+  std::terminate();
 }
 
 } // namespace impl
@@ -598,4 +622,7 @@ auto constexpr convert(Unit const& fromUnit, Unit const& toUnit,
   case Unit::Type::volume:
     return convert(fromUnit.volume(), toUnit.volume(), value);
   }
+  // Unreachable unless not all Unit::Type enumerators are covered in the
+  // switch.
+  std::terminate();
 }
