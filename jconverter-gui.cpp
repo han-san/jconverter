@@ -1,5 +1,4 @@
-#include <iostream>
-#include <limits>
+#include "logic.hpp"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
@@ -8,7 +7,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedLayout>
 
-#include "logic.hpp"
+#include <iostream>
+#include <limits>
 
 auto main(int argc, char** argv) -> int {
   QApplication converterApp(argc, argv);

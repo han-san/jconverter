@@ -1,10 +1,10 @@
+#include "logic.hpp"
+
 #include <cctype>
 #include <iostream>
 #include <optional>
 #include <string>
 #include <string_view>
-
-#include "logic.hpp"
 
 using namespace std::string_view_literals;
 using std::cerr;
