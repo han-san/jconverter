@@ -188,7 +188,7 @@ auto main(int argc, char** argv) -> int {
                      [](char unsigned c) { return std::tolower(c); });
       return Unit {vmap.at(unitString)};
     } catch (const std::out_of_range&) {
-      return {};
+      return std::nullopt;
     }
   };
 
