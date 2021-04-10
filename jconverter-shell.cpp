@@ -1,5 +1,7 @@
 #include "logic.hpp"
 
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <optional>
 #include <stdexcept>
@@ -180,22 +182,23 @@ auto main(int argc, char** argv) -> int {
 
   VariantMap vmap;
 
-  auto const stringToUnit =
-      [&vmap](string_view const unitString) -> std::optional<Unit> {
+  auto const stringToUnit = [&vmap](string unitString) -> std::optional<Unit> {
     try {
+      std::transform(unitString.begin(), unitString.end(), unitString.begin(),
+                     [](char unsigned c) { return std::tolower(c); });
       return Unit {vmap.at(unitString)};
     } catch (const std::out_of_range&) {
       return {};
     }
   };
 
-  auto const fromUnit = stringToUnit(fromString);
+  auto const fromUnit = stringToUnit(string {fromString});
   if (!fromUnit) {
     cerr << "[From] is not a valid unit (" << fromString << ").\n";
     return EXIT_FAILURE;
   }
 
-  auto const toUnit = stringToUnit(toString);
+  auto const toUnit = stringToUnit(string {toString});
   if (!toUnit) {
     cerr << "[To] is not a valid unit (" << toString << ").\n";
     return EXIT_FAILURE;
