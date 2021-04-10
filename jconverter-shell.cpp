@@ -180,7 +180,7 @@ auto main(int argc, char** argv) -> int {
     return argv[3];
   }();
 
-  VariantMap vmap;
+  VariantMap const vmap;
 
   auto const stringToUnit = [&vmap](string unitString) -> std::optional<Unit> {
     try {
