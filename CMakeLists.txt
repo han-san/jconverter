@@ -9,7 +9,7 @@ project(JConverter-shell
     DESCRIPTION "Converts between different units"
     LANGUAGES CXX)
 
-add_executable(JConverter-shell jconverter-shell.cpp)
+add_executable(JConverter-shell jconverter-shell.cpp convertfromstrings.cpp)
 
 target_compile_features(JConverter-shell PUBLIC cxx_std_17)
 set_target_properties(JConverter-shell PROPERTIES CXX_EXTENSIONS OFF)
@@ -22,7 +22,7 @@ if(Qt5_FOUND)
         DESCRIPTION "Converts between different units"
         LANGUAGES CXX)
 
-    add_executable(JConverter jconverter-gui.cpp)
+    add_executable(JConverter jconverter-gui.cpp convertfromstrings.cpp)
     target_compile_features(JConverter PUBLIC cxx_std_17)
     set_target_properties(JConverter PROPERTIES CXX_EXTENSIONS OFF)
     target_link_libraries(JConverter Qt5::Widgets)
