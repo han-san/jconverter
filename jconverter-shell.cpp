@@ -161,25 +161,8 @@ auto static print_usage(string_view const programName) -> void {
   }
 }
 
-auto main(int argc, char** argv) -> int {
-  if (argc != 3 && argc != 4) {
-    print_usage(argv[0]);
-    return EXIT_FAILURE;
-  }
-
-  string_view const fromString {argv[1]};
-  string_view const toString {argv[2]};
-
-  // If the value arg is omitted or "-" get the string from stdin
-  auto const valueString = [argc, argv]() -> string {
-    if ((argc == 3) || ("-"sv == argv[3])) {
-      string tmp;
-      std::cin >> tmp;
-      return tmp;
-    }
-    return argv[3];
-  }();
-
+auto convert(string_view const fromString, string_view const toString,
+             string const& valueString) -> std::optional<double> {
   VariantMap const vmap;
 
   auto const stringToUnit = [&vmap](string unitString) -> std::optional<Unit> {
@@ -195,13 +178,13 @@ auto main(int argc, char** argv) -> int {
   auto const fromUnit = stringToUnit(string {fromString});
   if (!fromUnit) {
     cerr << "[From] is not a valid unit (" << fromString << ").\n";
-    return EXIT_FAILURE;
+    return std::nullopt;
   }
 
   auto const toUnit = stringToUnit(string {toString});
   if (!toUnit) {
     cerr << "[To] is not a valid unit (" << toString << ").\n";
-    return EXIT_FAILURE;
+    return std::nullopt;
   }
 
   auto const value = [&valueString]() -> std::optional<double> {
@@ -217,13 +200,38 @@ auto main(int argc, char** argv) -> int {
   }();
 
   if (!value) {
-    return EXIT_FAILURE;
+    return std::nullopt;
   }
-  auto const result = convert(*fromUnit, *toUnit, *value);
 
-  if (result) {
-    std::cout << *result << '\n';
-  } else {
+  auto const result = convert(*fromUnit, *toUnit, *value);
+  if (!result) {
     cerr << "ERR: Units are of different types.";
   }
+  return result;
+}
+
+auto main(int argc, char** argv) -> int {
+  if (argc != 3 && argc != 4) {
+    print_usage(argv[0]);
+    return EXIT_FAILURE;
+  }
+
+  auto const fromString = string_view {argv[1]};
+  auto const toString = string_view {argv[2]};
+
+  // If the value arg is omitted or "-" get the string from stdin
+  auto const valueString = [argc, argv]() -> string {
+    if ((argc == 3) || ("-"sv == argv[3])) {
+      string tmp;
+      std::cin >> tmp;
+      return tmp;
+    }
+    return argv[3];
+  }();
+
+  auto const maybeValue = convert(fromString, toString, valueString);
+  if (!maybeValue) {
+    return EXIT_FAILURE;
+  }
+  std::cout << *maybeValue << '\n';
 }
