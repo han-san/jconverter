@@ -1,3 +1,4 @@
+#include "convertfromstrings.hpp"
 #include "logic.hpp"
 
 #include <QtWidgets/QApplication>
@@ -44,14 +45,15 @@ auto main(int argc, char** argv) -> int {
   section->show();
 
   QObject::connect(button, &QPushButton::clicked, [&] {
-    auto value1 = convert_meter(unit1SpinBox->value(), Convert::FROM,
-                                (DistanceUnit)unit1->currentIndex());
-    std::cout << value1 << '\n';
-    auto value2 =
-        convert_meter(value1, Convert::TO, (DistanceUnit)unit2->currentIndex());
-    std::cout << value2 << '\n';
-
-    unit2Label->setText(QString::number(value2));
+    auto const fromUnit = unit1->currentText().toStdString();
+    auto const toUnit = unit2->currentText().toStdString();
+    auto const value = unit1SpinBox->value();
+    auto const maybeResult = convert(fromUnit, toUnit, value);
+    if (maybeResult) {
+      unit2Label->setText(QString::number(*maybeResult));
+    } else {
+      unit2Label->setText("ERROR");
+    }
   });
 
   return converterApp.exec();
