@@ -15,7 +15,7 @@ using std::string;
 using std::string_view;
 
 auto convert(string_view const fromString, string_view const toString,
-             string const& valueString) -> std::optional<double> {
+             double const value) -> std::optional<double> {
   VariantMap const vmap;
 
   auto const stringToUnit = [&vmap](string unitString) -> std::optional<Unit> {
@@ -40,25 +40,22 @@ auto convert(string_view const fromString, string_view const toString,
     return std::nullopt;
   }
 
-  auto const value = [&valueString]() -> std::optional<double> {
-    try {
-      return stod(valueString);
-    } catch (const std::invalid_argument&) {
-      cerr << "[Value] is not a valid number (" << valueString << ").\n";
-      return std::nullopt;
-    } catch (const std::out_of_range&) {
-      cerr << "[Value] is out of range for a double (" << valueString << ").\n";
-      return std::nullopt;
-    }
-  }();
-
-  if (!value) {
-    return std::nullopt;
-  }
-
-  auto const result = convert(*fromUnit, *toUnit, *value);
+  auto const result = convert(*fromUnit, *toUnit, value);
   if (!result) {
     cerr << "ERR: Units are of different types.";
   }
   return result;
+}
+
+auto convert(string_view const fromString, string_view const toString,
+             string const& valueString) -> std::optional<double> {
+  try {
+    return convert(fromString, toString, stod(valueString));
+  } catch (const std::invalid_argument&) {
+    cerr << "[Value] is not a valid number (" << valueString << ").\n";
+    return std::nullopt;
+  } catch (const std::out_of_range&) {
+    cerr << "[Value] is out of range for a double (" << valueString << ").\n";
+    return std::nullopt;
+  }
 }

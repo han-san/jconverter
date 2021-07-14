@@ -133,5 +133,7 @@ private:
   };
 };
 
-auto convert(std::string_view const fromString, std::string_view const toString,
+auto convert(std::string_view fromString, std::string_view toString,
+             double valueString) -> std::optional<double>;
+auto convert(std::string_view fromString, std::string_view toString,
              std::string const& valueString) -> std::optional<double>;
