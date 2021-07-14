@@ -37,8 +37,10 @@ auto main(int argc, char** argv) -> int {
 
   auto unit1 = new QComboBox;
   auto unit2 = new QComboBox;
-  unit1->addItems({"Meters", "Miles", "Feet", "Inches"});
-  unit2->addItems({"Meters", "Miles", "Feet", "Inches"});
+
+  auto const distanceQStrings = to_qstringlist(distanceStrings);
+  unit1->addItems(distanceQStrings);
+  unit2->addItems(distanceQStrings);
 
   auto button = new QPushButton("Convert");
 
