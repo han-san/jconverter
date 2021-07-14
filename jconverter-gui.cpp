@@ -1,6 +1,8 @@
 #include "convertfromstrings.hpp"
 #include "logic.hpp"
 
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -8,8 +10,27 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedLayout>
 
-#include <iostream>
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <iterator>
 #include <limits>
+#include <string_view>
+
+template <std::size_t N>
+auto to_qstringlist(std::array<std::string_view, N> const& strArray)
+    -> QStringList {
+  auto qstrlist = QStringList {};
+  qstrlist.reserve(static_cast<int>(strArray.size()));
+  for (auto const& str : strArray) {
+    auto qstr = QString {};
+    qstr.reserve(static_cast<int>(str.size()));
+    std::transform(str.cbegin(), str.cend(), std::back_inserter(qstr),
+                   [](auto const ch) { return QChar {ch}; });
+    qstrlist.push_back(qstr);
+  }
+  return qstrlist;
+}
 
 auto main(int argc, char** argv) -> int {
   QApplication converterApp(argc, argv);
