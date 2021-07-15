@@ -35,47 +35,47 @@ auto to_qstringlist(std::array<std::string_view, N> const& strArray)
 auto main(int argc, char** argv) -> int {
   QApplication converterApp(argc, argv);
 
-  auto unit1 = new QComboBox;
-  auto unit2 = new QComboBox;
+  auto unit1 = QComboBox {};
+  auto unit2 = QComboBox {};
 
   auto const distanceQStrings = to_qstringlist(distanceStrings);
-  unit1->addItems(distanceQStrings);
-  unit2->addItems(distanceQStrings);
+  unit1.addItems(distanceQStrings);
+  unit2.addItems(distanceQStrings);
 
-  auto button = new QPushButton("Convert");
+  auto button = QPushButton {"Convert"};
 
-  auto unit1SpinBox = new QDoubleSpinBox;
-  unit1SpinBox->setMaximum(std::numeric_limits<double>::max());
-  auto unit1SectionLayout = new QVBoxLayout;
-  unit1SectionLayout->addWidget(unit1);
-  unit1SectionLayout->addWidget(unit1SpinBox);
-  auto unit1Section = new QWidget;
-  unit1Section->setLayout(unit1SectionLayout);
+  auto unit1SpinBox = QDoubleSpinBox {};
+  unit1SpinBox.setMaximum(std::numeric_limits<double>::max());
+  auto unit1SectionLayout = QVBoxLayout {};
+  unit1SectionLayout.addWidget(&unit1);
+  unit1SectionLayout.addWidget(&unit1SpinBox);
+  auto unit1Section = QWidget {};
+  unit1Section.setLayout(&unit1SectionLayout);
 
-  auto unit2Label = new QLabel;
-  auto unit2SectionLayout = new QVBoxLayout;
-  unit2SectionLayout->addWidget(unit2);
-  unit2SectionLayout->addWidget(unit2Label);
-  auto unit2Section = new QWidget;
-  unit2Section->setLayout(unit2SectionLayout);
+  auto unit2Label = QLabel {};
+  auto unit2SectionLayout = QVBoxLayout {};
+  unit2SectionLayout.addWidget(&unit2);
+  unit2SectionLayout.addWidget(&unit2Label);
+  auto unit2Section = QWidget {};
+  unit2Section.setLayout(&unit2SectionLayout);
 
-  auto layout = new QHBoxLayout;
-  layout->addWidget(unit1Section);
-  layout->addWidget(unit2Section);
-  layout->addWidget(button);
-  auto section = new QWidget;
-  section->setLayout(layout);
-  section->show();
+  auto layout = QHBoxLayout {};
+  layout.addWidget(&unit1Section);
+  layout.addWidget(&unit2Section);
+  layout.addWidget(&button);
+  auto section = QWidget {};
+  section.setLayout(&layout);
+  section.show();
 
-  QObject::connect(button, &QPushButton::clicked, [&] {
-    auto const fromUnit = unit1->currentText().toStdString();
-    auto const toUnit = unit2->currentText().toStdString();
-    auto const value = unit1SpinBox->value();
+  QObject::connect(&button, &QPushButton::clicked, [&] {
+    auto const fromUnit = unit1.currentText().toStdString();
+    auto const toUnit = unit2.currentText().toStdString();
+    auto const value = unit1SpinBox.value();
     auto const maybeResult = convert(fromUnit, toUnit, value);
     if (maybeResult) {
-      unit2Label->setText(QString::number(*maybeResult));
+      unit2Label.setText(QString::number(*maybeResult));
     } else {
-      unit2Label->setText("ERROR");
+      unit2Label.setText("ERROR");
     }
   });
 
